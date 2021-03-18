@@ -10,6 +10,11 @@ const routes = [
     name: "Home",
     component: Home
   },
+  {
+    path: "/concerts",
+    component: () =>
+      import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
+  },
 ];
 
 const router = new VueRouter({
