@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Opening/>
     <NavBar/>
     <router-view />
   </div>
@@ -7,10 +8,12 @@
 </template>
 
 <script>
+import Opening from "@/components/Opening.vue";
 import NavBar from "@/components/NavBar.vue";
 export default {
   name: "App",
   components: {
+    Opening,
     NavBar,
   }
 }
