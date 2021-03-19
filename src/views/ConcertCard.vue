@@ -113,7 +113,7 @@ export default {
     slicedData() {
       let start = this.currentPage * this.perPage;
       let end = (this.currentPage + 1) * this.perPage;
-      return this.searchData.slice(start, end);
+      return this.sortData.slice(start, end);
     },
     totalPages() {
       if (this.searchData.length % this.perPage === 0) {
@@ -131,7 +131,11 @@ export default {
           false
         )
       );
-      return temp.sort(
+      return temp
+    },
+    sortData(){
+      let copy = JSON.parse(JSON.stringify(this.searchData));
+      return copy.sort(
         (a, b) => (new Date(b.date) - new Date(a.date)) * this.order
       );
     },
