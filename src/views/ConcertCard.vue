@@ -1,5 +1,5 @@
 <template>
-  <div class="test py-4 ">
+  <div class="test py-4">
     <div class="container card-container">
       <div class="row justify-content-center my-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
@@ -11,7 +11,10 @@
             placeholder="請輸入關鍵字"
           />
         </div>
-        <div class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2" v-if="searchData.length">
+        <div
+          class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2"
+          v-if="searchData.length"
+        >
           <input type="checkbox" id="checkboxOne" v-model="selectAll" />
           <label for="checkboxOne"> 全選</label>
         </div>
@@ -20,15 +23,17 @@
         <button
           class="m-auto sort-btn"
           @click="order = order * -1"
-          :class="order ===1 ? 'descending' : 'ascending'"
+          :class="order === 1 ? 'descending' : 'ascending'"
         >
           日期
         </button>
-        <span class="session"> 已選 {{selected.length}} 場</span>
-
+        <span class="session"> 已選 {{ selected.length }} 場</span>
       </div>
 
-      <div class="row justify-content-center my-2 tickets" v-if="searchData.length">
+      <div
+        class="row justify-content-center my-2 tickets"
+        v-if="searchData.length"
+      >
         <div v-for="(data, index) in slicedData" :key="index">
           <div class="ticket">
             <label>
@@ -38,12 +43,16 @@
               <div class="top">
                 <div class="row my-3 justify-content-center align-items-center">
                   <i class="material-icons mx-2">event</i
-                  ><span class="date" style="color: #2c3e50">{{ data.date }}</span>
+                  ><span class="date" style="color: #2c3e50">{{
+                    data.date
+                  }}</span>
                 </div>
                 <!-- <p class="series">{{ data.series }}</p> -->
                 <div class="row my-3 justify-content-center align-items-center">
                   <i class="material-icons mx-2">location_on</i>
-                  <span class="city" style="color: #2c3e50"> {{ data.city }}</span>
+                  <span class="city" style="color: #2c3e50">
+                    {{ data.city }}</span
+                  >
                 </div>
                 <input type="checkbox" :value="data" v-model="selected" />
                 <span class="material-icons check-btn">check_circle</span>
@@ -56,7 +65,11 @@
                 <input class="detail-toggle" type="checkbox" />
                 <div class="detail">
                   <hr />
-                  <p  v-for="(song, idx) in data.songs" :key="idx" style="color: #2c3e50">
+                  <p
+                    v-for="(song, idx) in data.songs"
+                    :key="idx"
+                    style="color: #2c3e50"
+                  >
                     {{ idx + 1 }}. {{ song }}
                   </p>
                 </div>
@@ -67,7 +80,10 @@
       </div>
       <h1 class="warning" v-else>沒有搜尋到東西</h1>
     </div>
-    <div class="row justify-content-center align-items-center" v-if="searchData.length">
+    <div
+      class="row justify-content-center align-items-center"
+      v-if="searchData.length"
+    >
       <select class="perpage" v-model="perPage">
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
         <option>{{ searchData.length }}</option>
@@ -89,7 +105,7 @@
       >
       </paginate>
     </div>
-    <button class="submit-btn" @click="submitData()" v-if="searchData.length"> 
+    <button class="submit-btn" @click="submitData()" v-if="searchData.length">
       送出
     </button>
   </div>
@@ -117,8 +133,8 @@ export default {
     },
     totalPages() {
       if (this.searchData.length % this.perPage === 0) {
-          return parseInt(this.searchData.length / this.perPage);
-      }else{
+        return parseInt(this.searchData.length / this.perPage);
+      } else {
         return parseInt(this.searchData.length / this.perPage) + 1;
       }
     },
@@ -131,9 +147,9 @@ export default {
           false
         )
       );
-      return temp
+      return temp;
     },
-    sortData(){
+    sortData() {
       let copy = JSON.parse(JSON.stringify(this.searchData));
       return copy.sort(
         (a, b) => (new Date(b.date) - new Date(a.date)) * this.order
@@ -153,11 +169,11 @@ export default {
           this.slicedData.forEach((data) => {
             // 走訪每筆物件
             if (
-              this.selected.findIndex(
-                
-                (x) => {(x.date === data.date) && (x.series === data.series) && (x.event === data.event) }
-               
-              ) < 0
+              this.selected.findIndex((x) => {
+                x.date === data.date &&
+                  x.series === data.series &&
+                  x.event === data.event;
+              }) < 0
             ) {
               //沒有 才加入集合(重複防呆)
               this.selected.push(data);
@@ -173,24 +189,24 @@ export default {
   },
 
   methods: {
-    clickCallback: function(pageNum) {
+    clickCallback: function (pageNum) {
       this.currentPage = pageNum - 1;
     },
-    submitData: function() {
+    submitData: function () {
       let compressed = this.compressData(this.selected);
       let results = this.countData(compressed);
       this.results = results;
       localStorage.myResults = JSON.stringify(results);
       this.$router.push({ path: "/Result" });
     },
-    compressData: function(arr) {
+    compressData: function (arr) {
       let results = [];
       arr.forEach((value) => {
         results = results.concat(value.songs);
       });
       return results;
     },
-    countData: function(arr) {
+    countData: function (arr) {
       let results = [];
       // make a copy of the input array
       let trimedArr = arr.map((str) => str.trim());
@@ -238,7 +254,7 @@ export default {
   border-radius: 50px !important;
 }
 
-.check-all-btn{
+.check-all-btn {
   margin: 0;
 }
 
@@ -299,34 +315,34 @@ export default {
   border: 2px solid #fff;
 }
 
-.sort-btn{
-  background: #EBECED;
-  color: rgba(0,0,0,.87);
+.sort-btn {
+  background: #ebeced;
+  color: rgba(0, 0, 0, 0.87);
   font-size: 0.85rem;
   border: none;
   border-radius: 50px;
   padding: 0.2rem 0.75rem;
 }
 
-.sort-btn.ascending::after{
+.sort-btn.ascending::after {
   font-size: 0.85rem;
   transition: transform 0.3s ease-in-out;
   font-family: "Material Icons";
-  content:"\e5c7"
+  content: "\e5c7";
 }
 
-.sort-btn.descending::after{
+.sort-btn.descending::after {
   font-size: 0.85rem;
   transition: transform 0.3s ease-in-out;
   font-family: "Material Icons";
-  content:"\e5c5"
+  content: "\e5c5";
 }
 
-.session{
+.session {
   color: white;
 }
 
-.tickets{
+.tickets {
   height: 58vh;
   overflow-y: scroll;
 }
@@ -334,15 +350,13 @@ export default {
 .ticket {
   width: 15.5rem;
   // padding: 0.5rem;
-  background: #EEEEEE; // #FFFFF3;
+  background: #eeeeee; // #FFFFF3;
   border-radius: 5px;
   margin: 1rem;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
-  0 12.5px 10px rgba(0, 0, 0, 0.06),
-  0 22.3px 17.9px rgba(0, 0, 0, 0.072),
-  0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-  0 100px 80px rgba(0, 0, 0, 0.12);
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
 }
 .ticket header {
   background: linear-gradient(60deg, #b99362, #d3b288d0);
@@ -449,7 +463,7 @@ export default {
 
 .perpage {
   display: inline-block;
-  height: calc(1em + .75rem + 2px);
+  height: calc(1em + 0.75rem + 2px);
   border-radius: 10px;
 }
 
@@ -471,5 +485,4 @@ export default {
   padding: 0.5rem 1rem;
   color: white;
 }
-
 </style>
