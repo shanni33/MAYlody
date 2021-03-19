@@ -1,7 +1,7 @@
 <template>
-  <div class="test py-5 ">
+  <div class="test py-5">
     <div class="container card-container">
-      <div class="row  justify-content-center py-2 mx-auto tool-bar">
+      <div class="row justify-content-center py-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
           <input
             class="form-control search"
@@ -16,7 +16,7 @@
         <button
           class="m-auto sort-btn"
           @click="order = order * -1"
-          :class="order ===1 ? 'descending' : 'ascending'"
+          :class="order === 1 ? 'descending' : 'ascending'"
         >
           次數
         </button>
@@ -25,12 +25,18 @@
       <div class="row justify-content-center" v-if="isShow">
         <div v-for="(data, idx) in slicedData" :key="idx">
           <div class="result-card d-flex">
-            <div class="left d-flex align-items-center justify-content-center py-4">
-                <span class="material-icons mx-2">music_note</span> 
-                <h6 class="inner-text" style="color: #2c3e50">{{ data.value }}</h6>
+            <div
+              class="left d-flex align-items-center justify-content-center py-4"
+            >
+              <span class="material-icons mx-2">music_note</span>
+              <h6 class="inner-text" style="color: #2c3e50">
+                {{ data.value }}
+              </h6>
             </div>
             <div class="divd"></div>
-            <div class="right d-flex align-items-center justify-content-center py-4">
+            <div
+              class="right d-flex align-items-center justify-content-center py-4"
+            >
               <span class="material-icons mx-2">hearing</span>
               <h6 class="inner-text" style="color: #2c3e50">
                 {{ data.count }}
@@ -81,12 +87,12 @@ export default {
     slicedData() {
       let start = this.currentPage * this.perPage;
       let end = (this.currentPage + 1) * this.perPage;
-      return this.searchData.slice(start, end);
+      return this.sortData.slice(start, end);
     },
     totalPages() {
       if (this.searchData.length % this.perPage === 0) {
-          return parseInt(this.searchData.length / this.perPage);
-      }else{
+        return parseInt(this.searchData.length / this.perPage);
+      } else {
         return parseInt(this.searchData.length / this.perPage) + 1;
       }
     },
@@ -99,28 +105,27 @@ export default {
           false
         )
       );
-      return temp.sort(
-        (a, b) =>((b.count - a.count) * this.order)
+      return temp
+    },
+    sortData() {
+      let copy = JSON.parse(JSON.stringify(this.searchData));
+      return copy.sort(
+        (a, b) => (b.count - a.count) * this.order
       );
     },
-    
     isShow() {
       return this.parseData.length > 0;
     },
   },
 
   methods: {
-    clickCallback: function(pageNum) {
+    clickCallback: function (pageNum) {
       this.currentPage = pageNum - 1;
-    },
-    sortData(attr, order) {
-      return this.parseData.sort((a, b) => (a[attr] - b[attr])*order);
     },
   },
 };
 </script>
 <style lang="scss">
-
 .tool-bar {
   margin: 0;
   align-items: center;
@@ -133,7 +138,6 @@ export default {
 .result-card {
   margin: 1rem;
   width: 18rem;
-  
 }
 
 .left,
@@ -142,8 +146,8 @@ export default {
     to bottom,
     #b99362 0%,
     #b99362 8%,
-    #EEEEEE 8%,
-    #EEEEEE 100%
+    #eeeeee 8%,
+    #eeeeee 100%
   );
   position: relative;
   height: 6em;
@@ -160,7 +164,6 @@ export default {
   border-left: 0.1em dashed gray;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
-  
 }
 
 .right:before,
@@ -183,7 +186,7 @@ export default {
   bottom: -0.45rem;
 }
 
-h6.inner-text{
+h6.inner-text {
   margin-bottom: 0;
 }
 </style>
