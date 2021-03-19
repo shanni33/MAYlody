@@ -22,7 +22,6 @@ export default {
 <style lang="scss">
 body {
   font-family: "PingFang TC", "Microsoft JhengHei", Sans-Serif !important;
-  letter-spacing: 1.25px;
 }
 #app {
   -webkit-font-smoothing: antialiased;
