@@ -3,13 +3,7 @@
     <div class="container card-container">
       <div class="row justify-content-center py-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <input
-            class="form-control search"
-            type="text"
-            name="search"
-            v-model="searchText"
-            placeholder="請輸入關鍵字"
-          />
+          <SearchBar :inputData="parseData" @on-search="returnSearch" />
         </div>
       </div>
       <div class="row minor-bar py-2 m-auto">
@@ -22,7 +16,7 @@
         </button>
       </div>
 
-      <div class="row justify-content-center" v-if="isShow">
+      <div class="row justify-content-center" v-if="parseData.length">
         <div v-for="(data, idx) in slicedData" :key="idx">
           <div class="result-card d-flex">
             <div
@@ -50,7 +44,7 @@
     <div class="row justify-content-center my-2 col-12">
       <select class="perpage" v-model="perPage">
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
-        <option>{{ searchData.length }}</option>
+        <option>{{ filterData.length }}</option>
       </select>
 
       <paginate
@@ -72,15 +66,19 @@
   </div>
 </template>
 <script>
+import SearchBar from "@/components/SearchBar.vue";
 export default {
+  components: {
+    SearchBar,
+  },
   data() {
     return {
-      parseData: JSON.parse(localStorage.myResults),
       currentPage: 0,
-      pages: [12, 24, 36, 48, 60],
-      perPage: 12,
-      searchText: "",
+      filterData: [],
       order: 1,
+      pages: [12, 24, 36, 48, 60],
+      parseData: JSON.parse(localStorage.myResults),
+      perPage: 12,
     };
   },
   computed: {
@@ -89,38 +87,25 @@ export default {
       let end = (this.currentPage + 1) * this.perPage;
       return this.sortData.slice(start, end);
     },
-    totalPages() {
-      if (this.searchData.length % this.perPage === 0) {
-        return parseInt(this.searchData.length / this.perPage);
-      } else {
-        return parseInt(this.searchData.length / this.perPage) + 1;
-      }
-    },
-    searchData() {
-      var copy = JSON.parse(JSON.stringify(this.parseData));
-      //   var re = new RegExp("("+this.searchText+")")
-      var temp = copy.filter((data) =>
-        Object.values(data).reduce(
-          (result, b) => result || (b + "").indexOf(this.searchText) != -1,
-          false
-        )
-      );
-      return temp
-    },
     sortData() {
-      let copy = JSON.parse(JSON.stringify(this.searchData));
-      return copy.sort(
-        (a, b) => (b.count - a.count) * this.order
-      );
+      let copy = JSON.parse(JSON.stringify(this.filterData));
+      return copy.sort((a, b) => (b.count - a.count) * this.order);
     },
-    isShow() {
-      return this.parseData.length > 0;
+    totalPages() {
+      if (this.filterData.length % this.perPage === 0) {
+        return parseInt(this.filterData.length / this.perPage);
+      } else {
+        return parseInt(this.filterData.length / this.perPage) + 1;
+      }
     },
   },
 
   methods: {
     clickCallback: function (pageNum) {
       this.currentPage = pageNum - 1;
+    },
+    returnSearch: function (outputData) {
+      this.filterData = outputData;
     },
   },
 };

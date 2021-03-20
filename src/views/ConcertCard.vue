@@ -3,23 +3,17 @@
     <div class="container card-container">
       <div class="row justify-content-center my-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <input
-            class="form-control search"
-            type="text"
-            name="search"
-            v-model="searchText"
-            placeholder="請輸入關鍵字"
-          />
+          <SearchBar :inputData="searchData" @on-search="returnSearch" />
         </div>
         <div
           class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2"
-          v-if="searchData.length"
+          v-if="filterData.length"
         >
           <input type="checkbox" id="checkboxOne" v-model="selectAll" />
           <label for="checkboxOne"> 全選</label>
         </div>
       </div>
-      <div class="row minor-bar my-2 m-auto" v-if="searchData.length">
+      <div class="row minor-bar my-2 m-auto" v-if="filterData.length">
         <button
           class="m-auto sort-btn"
           @click="order = order * -1"
@@ -32,7 +26,7 @@
 
       <div
         class="row justify-content-center my-2 tickets"
-        v-if="searchData.length"
+        v-if="filterData.length"
       >
         <div v-for="(data, index) in slicedData" :key="index">
           <div class="ticket">
@@ -82,11 +76,11 @@
     </div>
     <div
       class="row justify-content-center align-items-center"
-      v-if="searchData.length"
+      v-if="filterData.length"
     >
       <select class="perpage" v-model="perPage">
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
-        <option>{{ searchData.length }}</option>
+        <option>{{ filterData.length }}</option>
       </select>
 
       <paginate
@@ -105,56 +99,31 @@
       >
       </paginate>
     </div>
-    <button class="submit-btn" @click="submitData()" v-if="searchData.length">
+    <button class="submit-btn" @click="submitData()" v-if="filterData.length">
       送出
     </button>
   </div>
 </template>
 <script>
 import ConcertDatas from "../assets/dataset.json";
+import SearchBar from "@/components/SearchBar.vue";
+
 export default {
+  components: {
+    SearchBar,
+  },
   data() {
     return {
-      selected: [],
-      concertDatas: ConcertDatas,
       currentPage: 0,
+      filterData: [],
+      order: 1,
       pages: [12, 24, 36, 48, 60],
       perPage: 12,
-      searchText: "",
-      order: 1,
-      // checkText: "全選",
+      searchData: ConcertDatas,
+      selected: [],
     };
   },
   computed: {
-    slicedData() {
-      let start = this.currentPage * this.perPage;
-      let end = (this.currentPage + 1) * this.perPage;
-      return this.sortData.slice(start, end);
-    },
-    totalPages() {
-      if (this.searchData.length % this.perPage === 0) {
-        return parseInt(this.searchData.length / this.perPage);
-      } else {
-        return parseInt(this.searchData.length / this.perPage) + 1;
-      }
-    },
-    searchData() {
-      var copy = JSON.parse(JSON.stringify(this.concertDatas));
-      //   var re = new RegExp("("+this.searchText+")")
-      var temp = copy.filter((data) =>
-        Object.values(data).reduce(
-          (result, b) => result || (b + "").indexOf(this.searchText) != -1,
-          false
-        )
-      );
-      return temp;
-    },
-    sortData() {
-      let copy = JSON.parse(JSON.stringify(this.searchData));
-      return copy.sort(
-        (a, b) => (new Date(b.date) - new Date(a.date)) * this.order
-      );
-    },
     selectAll: {
       get() {
         return this.slicedData
@@ -186,18 +155,29 @@ export default {
         }
       },
     },
+    slicedData() {
+      let start = this.currentPage * this.perPage;
+      let end = (this.currentPage + 1) * this.perPage;
+      return this.sortData.slice(start, end);
+    },
+    sortData() {
+      let copy = JSON.parse(JSON.stringify(this.filterData));
+      return copy.sort(
+        (a, b) => (new Date(b.date) - new Date(a.date)) * this.order
+      );
+    },
+    totalPages() {
+      if (this.filterData.length % this.perPage === 0) {
+        return parseInt(this.filterData.length / this.perPage);
+      } else {
+        return parseInt(this.filterData.length / this.perPage) + 1;
+      }
+    },
   },
 
   methods: {
     clickCallback: function (pageNum) {
       this.currentPage = pageNum - 1;
-    },
-    submitData: function () {
-      let compressed = this.compressData(this.selected);
-      let results = this.countData(compressed);
-      this.results = results;
-      localStorage.myResults = JSON.stringify(results);
-      this.$router.push({ path: "/Result" });
     },
     compressData: function (arr) {
       let results = [];
@@ -232,6 +212,16 @@ export default {
         }
       }
       return results;
+    },
+    returnSearch: function (outputData) {
+      this.filterData = outputData;
+    },
+    submitData: function () {
+      let compressed = this.compressData(this.selected);
+      let results = this.countData(compressed);
+      this.results = results;
+      localStorage.myResults = JSON.stringify(results);
+      this.$router.push({ path: "/Result" });
     },
   },
 };
