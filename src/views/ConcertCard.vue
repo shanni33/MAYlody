@@ -132,25 +132,23 @@ export default {
       },
       set(value) {
         // value 是 v-model 在全選 checkbox 上的勾選狀態，打勾時為 true
-        // let selected = [];
         if (value) {
-          // this.checkText = "取消全選";
           this.slicedData.forEach((data) => {
             // 走訪每筆物件
             if (
-              this.selected.findIndex((x) => {
+              this.selected.filter((x) => {
                 x.date === data.date &&
-                  x.series === data.series &&
-                  x.event === data.event;
-              }) < 0
+                x.series === data.series &&
+                x.event === data.event &&
+                x.city === data.city &&
+                x.songs.length === data.songs.length;
+              }).length == 0
             ) {
               //沒有 才加入集合(重複防呆)
               this.selected.push(data);
             }
-            // selected.push(data);
           });
         } else {
-          // this.checkText = "全選";
           this.selected = [];
         }
       },
