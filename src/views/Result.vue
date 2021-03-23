@@ -77,7 +77,7 @@ export default {
       filterData: [],
       order: 1,
       pages: [12, 24, 36, 48, 60],
-      parseData: JSON.parse(localStorage.myResults),
+      parseData: JSON.parse(sessionStorage.myResults || '[]'),
       perPage: 12,
     };
   },

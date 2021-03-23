@@ -120,7 +120,7 @@ export default {
       pages: [12, 24, 36, 48, 60],
       perPage: 12,
       searchData: ConcertDatas,
-      selected: [],
+      selected: JSON.parse(sessionStorage.mySelected || '[]'),
     };
   },
   computed: {
@@ -136,13 +136,13 @@ export default {
           this.slicedData.forEach((data) => {
             // 走訪每筆物件
             if (
-              this.selected.filter((x) => {
+              this.selected.filter((x) => 
                 x.date === data.date &&
                 x.series === data.series &&
                 x.event === data.event &&
                 x.city === data.city &&
-                x.songs.length === data.songs.length;
-              }).length == 0
+                x.songs.length === data.songs.length
+              ).length == 0
             ) {
               //沒有 才加入集合(重複防呆)
               this.selected.push(data);
@@ -218,9 +218,18 @@ export default {
       let compressed = this.compressData(this.selected);
       let results = this.countData(compressed);
       this.results = results;
-      localStorage.myResults = JSON.stringify(results);
+      sessionStorage.myResults = JSON.stringify(results);
       this.$router.push({ path: "/Result" });
     },
+  },
+  watch: {
+    selected: {
+      deep: true,
+      handler: function(value) {
+        sessionStorage.mySelected = JSON.stringify(value);
+      }
+    }
+
   },
 };
 </script>
