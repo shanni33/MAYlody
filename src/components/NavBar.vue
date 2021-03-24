@@ -235,7 +235,7 @@ export default {
   }
 }
 
-.router-link-active {
+.router-link-exact-active {
   color: #b99362 !important;
 }
 
