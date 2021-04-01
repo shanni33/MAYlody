@@ -2,30 +2,56 @@
   <div>
     <div class="ticket">
       <label>
-        <header>
-          <span style="color: #2c3e50">{{ inputData.event }}</span>
-        </header>
         <div class="top">
-          <div class="row my-3 justify-content-center align-items-center">
-            <i class="material-icons mx-2">event</i
-            ><span class="date" style="color: #2c3e50">{{
-              inputData.date
-            }}</span>
+          <div class="info">
+            <div class="row my-2 justify-content-center align-items-center">
+              <span class="event" style="color: #2c3e50">{{
+                inputData.event
+              }}</span>
+            </div>
+            <div class="row mt-3 justify-content-center align-items-center">
+              <span class="date" style="color: #2c3e50">{{
+                inputData.date
+              }}</span>
+            </div>
+            <div class="row mt-2 justify-content-center align-items-center">
+              <span class="city" style="color: #2c3e50">
+                @{{ inputData.city }}</span
+              >
+            </div>
+            <hr class="info-divider" />
+            <div class="row mt-2 mb-1 justify-content-around">
+              <div class="d-flex">
+                <div class="px-1" style="color: #2c3e50">
+                  <div class="seat-label">SEC</div>
+                  <div class="seat-num">A1</div>
+                </div>
+                <div class="px-1" style="color: #2c3e50">
+                  <div class="seat-label">ROW</div>
+                  <div class="seat-num">1</div>
+                </div>
+                <div class="px-1" style="color: #2c3e50">
+                  <div class="seat-label">SEAT</div>
+                  <div class="seat-num">1</div>
+                </div>
+              </div>
+              <div class="d-flex">
+                <div class="px-1" style="color: #2c3e50">
+                  <div class="price-label">PRICE</div>
+                  <div class="price-num material-icons">all_inclusive</div>
+                </div>
+              </div>
+            </div>
+
+            <input type="checkbox" :value="inputData" v-model="cardSelect" />
+            <span class="material-icons check-btn">check_circle</span>
           </div>
-          <div class="row my-3 justify-content-center align-items-center">
-            <i class="material-icons mx-2">location_on</i>
-            <span class="city" style="color: #2c3e50">
-              {{ inputData.city }}</span
-            >
-          </div>
-          <input type="checkbox" :value="inputData" v-model="cardSelect" />
-          <span class="material-icons check-btn">check_circle</span>
         </div>
       </label>
       <div class="divider"></div>
       <label class="more text-align-center">
         <div class="bottom">
-          <div class="detail-btn px-2 py-1">歌單</div>
+          <div class="detail-btn">歌單</div>
           <input class="detail-toggle" type="checkbox" />
           <div class="detail">
             <hr />
@@ -68,114 +94,122 @@ export default {
 };
 </script>
 <style lang="scss">
-// ticket card
 .ticket {
   width: 15.5rem;
-  // padding: 0.5rem;
-  background: #eeeeee; // #FFFFF3;
+  background: #fffffd;
   border-radius: 5px;
   margin: 1rem;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12);
-}
-.ticket header {
-  background: linear-gradient(60deg, #b99362, #d3b288d0);
-  padding: 0.5em 2em;
-  border-radius: 5px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-  color: #fff;
-}
-.ticket .top,
-.ticket .bottom {
-  padding: 0.5rem;
-  text-align: center;
-  position: relative;
-  cursor: pointer;
-}
-
-.ticket label {
-  display: block;
-  margin: 0;
-}
-
-.date {
-  font-size: 1.1rem;
-}
-.material-icons {
-  color: #b99362;
-  text-shadow: 0 0 2px rgba(139, 139, 139, 0.493);
-}
-
-.ticket input {
-  display: none;
-}
-
-.divider {
-  width: 90%;
-  margin: auto;
-  height: 0.1rem;
-  background: linear-gradient(to right, #222 50%, transparent 50%);
-  background-size: 10px 8px, 100% 1px;
-  // opacity: 0.5;
-}
-
-.ticket .top::before,
-.ticket .top::after {
-  content: "";
-  display: block;
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #222;
-  border-radius: 50%;
-  z-index: 1;
-  bottom: 0;
-  margin-bottom: -10px;
-}
-
-.ticket label .top::before {
-  left: 0;
-  margin-left: -10px;
-}
-
-.ticket .top::after {
-  right: 0;
-  margin-right: -10px;
-}
-
-.ticket:hover {
-  transform: scale(1.01);
-}
-
-.check-btn {
-  color: gray;
-}
-
-.ticket input:checked + .check-btn {
-  color: #b99362;
-}
-
-.detail-toggle {
-  display: none;
-}
-
-.detail-toggle:checked + .detail {
-  max-height: none;
-  padding: 0.5rem;
-}
-
-.detail-btn {
-  display: inline-block;
-  background: linear-gradient(60deg, #b99362, #d3b288d0);
-  border-radius: 50px;
+  box-shadow: 0 8px 6px -6px black;
   color: white;
-}
 
-.detail {
-  max-height: 0px;
-  overflow: hidden;
+  &:hover {
+    transform: scale(1.01);
+  }
+
+  .material-icons {
+    color: #b99362;
+    text-shadow: 0 0 2px rgba(139, 139, 139, 0.493);
+  }
+
+  .info {
+    border: 2px solid #b99362;
+    border-radius: 5px;
+    padding: 0 1rem;
+  }
+
+  .top,
+  .bottom {
+    padding: 0.6rem 0.6rem;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+    .event {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .date,
+    .city {
+      font-size: 1rem;
+    }
+  }
+
+  .top::before,
+  .top::after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #262824;
+    border-radius: 50%;
+    z-index: 1;
+    bottom: 0;
+    margin-bottom: -10px;
+  }
+
+  .top::before {
+    left: 0;
+    margin-left: -10px;
+  }
+
+  .top::after {
+    right: 0;
+    margin-right: -10px;
+  }
+
+  label {
+    display: block;
+    margin: 0;
+  }
+
+  input {
+    display: none;
+    &:checked + .check-btn {
+      color: #b99362;
+    }
+  }
+
+  .info-divider {
+    margin-bottom: 0 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.3) !important;
+    // border-top: 1px solid #fff !important;
+  }
+
+  .divider {
+    width: 90%;
+    margin: auto;
+    height: 0.1rem;
+    background: linear-gradient(
+      to right,
+      rgba(34, 34, 34, 0.596) 50%,
+      transparent 50%
+    );
+    background-size: 10px 8px, 100% 2px;
+  }
+
+  .check-btn {
+    color: gray;
+  }
+
+  .detail-toggle {
+    display: none;
+    &:checked + .detail {
+      max-height: none;
+      padding: 0.5rem;
+    }
+  }
+
+  .detail-btn {
+    display: inline-block;
+    background: linear-gradient(60deg, #b99362, #d3b288d0);
+    border-radius: 25px;
+    color: white;
+    padding: 5px 16px;
+  }
+
+  .detail {
+    max-height: 0px;
+    overflow: hidden;
+  }
 }
 </style>
