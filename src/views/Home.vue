@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div
-      class="container d-flex h-100 align-items-center justify-content-center"
+      class="container d-flex h-100 align-items-center justify-content-center mt-5"
     >
       <div class="mx-auto text-center">
         <h2 class="title mx-auto my-0">還沒聽過五月天演唱會?</h2>
