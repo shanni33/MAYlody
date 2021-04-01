@@ -22,12 +22,12 @@ export default {
     };
   },
   watch: {
-    searchText() {
-      this.search();
+    searchText: {
+      immediate: true, // 在初始化時呼叫一次
+      handler() {
+        this.search();
+      },
     },
-  },
-  mounted: function () {
-    this.search();
   },
 
   methods: {
