@@ -3,7 +3,7 @@
     <div class="container card-container">
       <div class="row justify-content-center py-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <SearchBar :inputData="parseData" @on-search="returnSearch" />
+          <SearchBar :inputData="parseData" @on-search="returnSearch" class="search"/>
         </div>
       </div>
       <div class="row minor-bar py-2 m-auto">
@@ -173,5 +173,16 @@ export default {
 
 h6.inner-text {
   margin-bottom: 0;
+}
+
+.page-link {
+  border-radius: 100%;
+  border: none !important;
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.page-item.active .page-link {
+  background-color: #b99362 !important;
 }
 </style>

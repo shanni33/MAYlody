@@ -3,7 +3,7 @@
     <div class="container card-container">
       <div class="row justify-content-center my-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <SearchBar :inputData="searchData" @on-search="returnSearch" />
+          <SearchBar :inputData="searchData" @on-search="returnSearch" class="search"/>
         </div>
         <div
           class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2"
@@ -308,6 +308,7 @@ export default {
   height: 58vh;
   overflow-y: scroll;
 }
+
 .warning {
   color: white;
 }
