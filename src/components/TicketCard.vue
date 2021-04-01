@@ -186,6 +186,13 @@ export default {
     );
     background-size: 10px 8px, 100% 2px;
   }
+  .price-label,
+  .seat-label {
+    font-size: 0.5rem;
+  }
+  .seat-num {
+    font-weight: 600;
+  }
 
   .check-btn {
     color: gray;
