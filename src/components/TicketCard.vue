@@ -5,38 +5,32 @@
         <div class="top">
           <div class="info">
             <div class="row my-2 justify-content-center align-items-center">
-              <span class="event" style="color: #2c3e50">{{
-                inputData.event
-              }}</span>
+              <span class="event">{{ inputData.event }}</span>
             </div>
             <div class="row mt-3 justify-content-center align-items-center">
-              <span class="date" style="color: #2c3e50">{{
-                inputData.date
-              }}</span>
+              <span class="date">{{ inputData.date }}</span>
             </div>
             <div class="row mt-2 justify-content-center align-items-center">
-              <span class="city" style="color: #2c3e50">
-                @{{ inputData.city }}</span
-              >
+              <span class="city"> @{{ inputData.city }}</span>
             </div>
             <hr class="info-divider" />
             <div class="row mt-2 mb-1 justify-content-around">
               <div class="d-flex">
-                <div class="px-1" style="color: #2c3e50">
+                <div class="px-1">
                   <div class="seat-label">SEC</div>
                   <div class="seat-num">A1</div>
                 </div>
-                <div class="px-1" style="color: #2c3e50">
+                <div class="px-1">
                   <div class="seat-label">ROW</div>
                   <div class="seat-num">1</div>
                 </div>
-                <div class="px-1" style="color: #2c3e50">
+                <div class="px-1">
                   <div class="seat-label">SEAT</div>
                   <div class="seat-num">1</div>
                 </div>
               </div>
               <div class="d-flex">
-                <div class="px-1" style="color: #2c3e50">
+                <div class="px-1">
                   <div class="price-label">PRICE</div>
                   <div class="price-num material-icons">all_inclusive</div>
                 </div>
@@ -100,7 +94,7 @@ export default {
   border-radius: 5px;
   margin: 1rem;
   box-shadow: 0 8px 6px -6px black;
-  color: white;
+  color: #2c3e50;
 
   &:hover {
     transform: scale(1.01);
@@ -119,18 +113,10 @@ export default {
 
   .top,
   .bottom {
-    padding: 0.6rem 0.6rem;
+    padding: 0.5rem;
     text-align: center;
     position: relative;
     cursor: pointer;
-    .event {
-      font-size: 1.2rem;
-      font-weight: 700;
-    }
-    .date,
-    .city {
-      font-size: 1rem;
-    }
   }
 
   .top::before,
@@ -155,6 +141,16 @@ export default {
   .top::after {
     right: 0;
     margin-right: -10px;
+  }
+
+  .event {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .date,
+  .city {
+    font-size: 1rem;
   }
 
   label {
@@ -186,10 +182,12 @@ export default {
     );
     background-size: 10px 8px, 100% 2px;
   }
+
   .price-label,
   .seat-label {
     font-size: 0.5rem;
   }
+
   .seat-num {
     font-weight: 600;
   }
