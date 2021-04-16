@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" :class="{ 'onScroll': !topOfPage}">
       <div class="container">
         <router-link class="navbar-brand logo" to="/">
           <!-- <svg
@@ -213,7 +213,20 @@ export default {
   data() {
     return {
       isToggle: false,
+      topOfPage: true
     };
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll(){
+      if(window.pageYOffset>0){
+        if(this.topOfPage) this.topOfPage = false
+      } else {
+        if(!this.topOfPage) this.topOfPage = true
+      }
+    }
   },
 };
 </script>
@@ -313,6 +326,9 @@ export default {
   #mainNav {
     background-color: transparent;
     transition: all 1s ease;
+    &.onScroll {
+      background-color: #222;
+    }
   }
   .logo {
     svg {
