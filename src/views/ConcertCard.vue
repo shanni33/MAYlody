@@ -305,7 +305,7 @@ export default {
 }
 
 .tickets {
-  height: 58vh;
+  // height: 58vh;
   overflow-y: scroll;
 }
 
