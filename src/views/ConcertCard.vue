@@ -65,6 +65,9 @@
     <button class="submit-btn" @click="submitData()" v-if="filterData.length">
       送出
     </button>
+    <div class="scroll-top position-fixed h2 d-flex justify-content-center align-items-center" @click="scrollToTop">
+        <span class="material-icons"> expand_less </span>
+    </div>
   </div>
 </template>
 <script>
@@ -187,6 +190,23 @@ export default {
       sessionStorage.myResults = JSON.stringify(results);
       this.$router.push({ path: "/Result" });
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
+    ScrollHeight(){
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      if(scrollTop>300){
+        document.querySelector('.scroll-top').style.opacity = '1';
+      }else{
+        document.querySelector('.scroll-top').style.opacity = '0';
+      }   
+    }
+  },
+  mounted(){
+    window.addEventListener('scroll', this.ScrollHeight);
+  },
+  destroyed(){ 
+     window.removeEventListener('scroll', this.ScrollHeight);
   },
   watch: {
     selected: {
@@ -304,10 +324,10 @@ export default {
   color: white;
 }
 
-.tickets {
-  // height: 58vh;
-  overflow-y: scroll;
-}
+// .tickets {
+//   // height: 58vh;
+//   // overflow-y: scroll;
+// }
 
 .warning {
   color: white;
@@ -336,5 +356,23 @@ export default {
   border-radius: 50px;
   padding: 0.5rem 1rem;
   color: white;
+}
+
+.scroll-top {
+    z-index: 999;
+    bottom: 110px;
+    right: 50px;
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    transition: all 0.5s ease-in-out 0s;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #6c757d;
+    color: #fff;
+    background: #b99362;
+    cursor: pointer;
+    &:hover{
+      transform: scale(1.3);
+    }
 }
 </style>
