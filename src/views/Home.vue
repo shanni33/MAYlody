@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div
-      class="container d-flex h-100 align-items-center justify-content-center"
+      class="container d-flex h-100 align-items-center justify-content-center mt-5"
     >
       <div class="mx-auto text-center">
         <h2 class="title mx-auto my-0">還沒聽過五月天演唱會?</h2>
@@ -51,31 +51,38 @@ div.home {
   flex-direction: column;
   text-align: center;
   background-attachment: scroll;
-  padding: 15rem 0;
 }
 
-h2.title {
-  font-size: 2rem;
-  animation: fadein 8s;
-  animation-delay: -1s;
+.title {
+  font-size: calc(16px + (32 - 16) * ((100vw - 300px) / (1440 - 300)));
+  animation: fadein 3s forwards;
+  animation-delay: 0.5s;
+  transform: translate(0, -200%);
+  opacity: 0;
 }
-h1.sub-title {
-  font-size: 4rem;
-  animation: fadein 8s;
-  animation-delay: -1s;
+
+.sub-title {
+  font-size: calc(16px + (54 - 16) * ((100vw - 300px) / (1440 - 300)));
+  transform: translate(0, -200%);
+  animation: fadein 3s forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
 }
+
 .slogan h2 {
+  font-size: calc(16px + (32 - 16) * ((100vw - 300px) / (1440 - 300)));
   font-family: "Josefin Sans";
-  animation: fadein 10s;
-  animation-delay: -1s;
+  transform: translate(0, 25%);
+  animation: fadein  5s forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
 }
+
 
 @keyframes fadein {
-  from {
-    opacity: 0;
-  }
   to {
     opacity: 1;
+    transform: translate(0, 0%);
   }
 }
 </style>

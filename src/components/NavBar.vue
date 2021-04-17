@@ -1,6 +1,6 @@
 <template>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" :class="{ 'onScroll': !topOfPage}">
       <div class="container">
         <router-link class="navbar-brand logo" to="/">
           <!-- <svg
@@ -213,7 +213,20 @@ export default {
   data() {
     return {
       isToggle: false,
+      topOfPage: true
     };
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  methods: {
+    handleScroll(){
+      if(window.pageYOffset>0){
+        if(this.topOfPage) this.topOfPage = false
+      } else {
+        if(!this.topOfPage) this.topOfPage = true
+      }
+    }
   },
 };
 </script>
@@ -223,16 +236,31 @@ export default {
 #mainNav {
   // max-height: 8%; //4.5rem;
   background-color: #222;
-  height: 75px;
+  // height: 75px;
   transition: all 0.5s ease;
 }
 .nav-link {
   color: #ffffff !important;
   font-family: "Josefin Sans";
   transition: all 0.5s ease;
+  transform: translateX(100rem);
+  animation: slideIn 3s forwards;
   &:hover {
     color: #b99362 !important;
   }
+  &:nth-child(1){
+    animation-delay: 0s;
+  }
+  &:nth-child(2){
+    animation-delay: 0.5s;
+  }
+  &:nth-child(3){
+    animation-delay: 1s;
+  }
+  &:nth-child(4){
+    animation-delay: 1.5s;
+  }
+
 }
 
 .router-link-exact-active {
@@ -244,6 +272,8 @@ export default {
   height: auto;
   padding-top: 5px;
   margin-right: 15px;
+  transform: translateX(-100rem);
+  animation: slideIn 3s forwards;
   svg {
     fill: #b99362 !important;
     height: 6vh;
@@ -296,11 +326,22 @@ export default {
   #mainNav {
     background-color: transparent;
     transition: all 1s ease;
+    &.onScroll {
+      background-color: #222;
+    }
   }
   .logo {
     svg {
       height: 8vh;
     }
+  }
+}
+
+@keyframes slideIn {
+  from {
+  }
+  to {
+    transform: translateX(0);
   }
 }
 </style>

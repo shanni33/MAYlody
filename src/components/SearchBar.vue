@@ -1,6 +1,6 @@
 <template>
   <input
-    class="form-control search"
+    class="form-control"
     type="text"
     name="search"
     v-model="searchText"

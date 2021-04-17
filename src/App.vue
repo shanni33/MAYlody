@@ -2,7 +2,9 @@
   <div id="app">
     <Opening/>
     <NavBar/>
-    <router-view />
+    <transition name="fade" mode="out-in">
+      <router-view />
+    </transition>
   </div>
   
 </template>
@@ -28,5 +30,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #FFF;
+}
+.fade-enter, .fade-leave-to{
+  opacity: 0;
+}
+.fade-enter-active, .fade-leave-active{
+  transition: all .3s ease-in-out;
 }
 </style>
