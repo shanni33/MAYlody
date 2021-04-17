@@ -8,17 +8,40 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
   },
+  // {
+  //   path: "/concerts",
+  //   name: "concerts",
+  //   component: () =>
+  //     import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
+  // },
   {
     path: "/concerts",
+    name: "concerts",
     component: () =>
-      import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
-  },
-  {
-    path: "/result",
-    component: () =>
-      import(/* webpackChunkName: "Result" */ "../views/Result.vue"),
+      import(/* webpackChunkName: "Result" */ "../views/Concerts.vue"),
+    redirect: "/concerts/all",
+    children: [
+      {
+        path: "all",
+        name: "all",
+        component: () =>
+          import(/* webpackChunkName: "Result" */ "../views/All.vue"),
+      },
+      {
+        path: "selected",
+        name: "selected",
+        component: () =>
+          import(/* webpackChunkName: "Result" */ "../views/Selected.vue"),
+      },
+      {
+        path: "result",
+        name: "result",
+        component: () =>
+          import(/* webpackChunkName: "Result" */ "../views/Results.vue"),
+      },
+    ],
   },
 ];
 

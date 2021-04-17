@@ -1,5 +1,5 @@
 <template>
-  <div class="test py-5">
+  <div>
     <div class="container card-container">
       <div class="row justify-content-center py-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
@@ -123,6 +123,9 @@ export default {
 .result-card {
   margin: 1rem;
   width: 18rem;
+  .material-icons{
+    color: #b99362;
+  }
 }
 
 .left,
