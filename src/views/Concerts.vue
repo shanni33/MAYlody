@@ -1,6 +1,6 @@
 <template>
   <div class="concert-container">
-    <div class="minor-nav">
+    <div class="minor-nav mx-auto">
       <router-link class="minor-nav-link" to="/concerts/all">全部場次</router-link> |
       <router-link class="minor-nav-link" to="/concerts/selected">已選場次</router-link> |
       <router-link class="minor-nav-link" to="/concerts/result">統計結果</router-link>
@@ -19,7 +19,7 @@ export default {};
 
 <style lang="scss">
 .concert-container {
-  margin-top: 10rem;
+  margin-top: 8rem;
 }
 
 .minor-nav {

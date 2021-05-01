@@ -131,7 +131,7 @@
             <router-link
               @click.native="isToggle = !isToggle"
               class="nav-item nav-link"
-              to="/"
+              to="/home"
               >Home</router-link
             >
             <router-link

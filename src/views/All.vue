@@ -13,13 +13,13 @@
           class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2"
           v-if="filterData.length"
         >
-          <input type="checkbox" id="checkboxOne" v-model="selectAll" />
-          <label for="checkboxOne"> 全選</label>
+          <input type="checkbox" id="checkboxOne" v-model="selectAll" @click="check=!check"/>
+          <label for="checkboxOne"> {{check ? "取消" : "全選"}}</label>
         </div>
       </div>
-      <div class="row minor-bar my-2 m-auto" v-if="filterData.length">
+      <div class="row minor-bar my-2 justify-content-center" v-if="filterData.length">
         <button
-          class="m-auto sort-btn"
+          class="mx-auto sort-btn mx-2"
           @click="order = order * -1"
           :class="order === 1 ? 'descending' : 'ascending'"
         >
@@ -84,6 +84,7 @@ export default {
   },
   data() {
     return {
+      check: false,
       currentPage: 0,
       filterData: [],
       order: 1,
