@@ -8,8 +8,13 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    redirect: "/home"
   },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
+    },
   // {
   //   path: "/concerts",
   //   name: "concerts",

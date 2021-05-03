@@ -131,7 +131,7 @@
             <router-link
               @click.native="isToggle = !isToggle"
               class="nav-item nav-link"
-              to="/"
+              to="/home"
               >Home</router-link
             >
             <router-link
@@ -168,7 +168,7 @@
           <router-link
             @click.native="isToggle = !isToggle"
             class="nav-item nav-link"
-            to="/"
+            to="/home"
             >Home</router-link
           >
         </li>
@@ -260,10 +260,9 @@ export default {
   &:nth-child(4){
     animation-delay: 1.5s;
   }
-
 }
 
-.router-link-exact-active {
+.router-link-active {
   color: #b99362 !important;
 }
 

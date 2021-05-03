@@ -1,9 +1,9 @@
 <template>
   <div class="concert-container">
-    <div class="minor-nav">
-      <router-link to="/concerts/all">全部場次</router-link> |
-      <router-link to="/concerts/selected">已選場次</router-link> |
-      <router-link to="/concerts/result">統計結果</router-link>
+    <div class="minor-nav mx-auto">
+      <router-link class="minor-nav-link" to="/concerts/all">全部場次</router-link> |
+      <router-link class="minor-nav-link" to="/concerts/selected">已選場次</router-link> |
+      <router-link class="minor-nav-link" to="/concerts/result">統計結果</router-link>
     </div>
     <div class="content py-4">
       <transition name="fade" mode="out-in">
@@ -19,20 +19,25 @@ export default {};
 
 <style lang="scss">
 .concert-container {
-  margin-top: 10rem;
+  margin-top: 8rem;
 }
 
 .minor-nav {
-  a {
+  .minor-nav-link {
     display: inline-block;
-    text-decoration: none;
-    color: #fff !important;
+    color: #fff;
     font-size: 1.2rem;
     transition: all 0.5s ease;
+    padding: .5rem 1rem;
+    text-decoration: none;
     &:hover {
       color: #b99362 !important;
     }
   }
+}
+
+.router-link-active {
+  color: #b99362 !important;
 }
 
 .content {
