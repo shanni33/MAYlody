@@ -20,7 +20,13 @@ export default {
     };
   },
   mounted() {
-    osmMap = L.map("map").setView([25.03, 121.55], 15);
+    osmMap = L.map("map", {
+      center: [23.5, 121.55],
+      minZoom: 3,
+      maxZoom: 18,
+      zoom: 8,
+      zoomControl: true,
+    });
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution:
@@ -60,22 +66,30 @@ export default {
     //         }
     //     });
     // }
-    markers.on('clusterclick', function(a){
-        if(a.layer._zoom == 18){
-            var popUpText = '<ul>';
-            //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
-            //let's work with the data:
-            for (var feat in a.layer._markers){
-              console.log(feat);
-              console.log(a.layer._markers);
-              popUpText+= '<li>' + a.layer._markers[feat].feature.properties['event'] + ', ' + a.layer._markers[feat].feature.properties['date'] + '</li>';
-              // popUpText+= `<li><u onclick='openPopUp("${a.layer._markers[feat]._leaflet_id}, ${a.layer._leaflet_id}");'> ${a.layer._markers[feat].feature.properties['name']} + ,  + ${a.layer._markers[feat].feature.properties['date']} </u></li>`;
-            }
-            popUpText += '</ul>';
-            //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
-            L.popup().setLatLng([a.layer._cLatLng.lat, a.layer._cLatLng.lng]).setContent(popUpText).openOn(osmMap); 
+    markers.on("clusterclick", function (a) {
+      if (a.layer._zoom == 18) {
+        var popUpText = "<ul>";
+        //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
+        //let's work with the data:
+        for (var feat in a.layer._markers) {
+          console.log(feat);
+          console.log(a.layer._markers);
+          popUpText +=
+            "<li>" +
+            a.layer._markers[feat].feature.properties["event"] +
+            ", " +
+            a.layer._markers[feat].feature.properties["date"] +
+            "</li>";
+          // popUpText+= `<li><u onclick='openPopUp("${a.layer._markers[feat]._leaflet_id}, ${a.layer._leaflet_id}");'> ${a.layer._markers[feat].feature.properties['name']} + ,  + ${a.layer._markers[feat].feature.properties['date']} </u></li>`;
         }
-    })
+        popUpText += "</ul>";
+        //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
+        L.popup()
+          .setLatLng([a.layer._cLatLng.lat, a.layer._cLatLng.lng])
+          .setContent(popUpText)
+          .openOn(osmMap);
+      }
+    });
   },
 };
 </script>
