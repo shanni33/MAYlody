@@ -149,7 +149,7 @@
             <router-link
               @click.native="isToggle = !isToggle"
               class="nav-item nav-link"
-              to="/test"
+              to="/map"
               >concert map</router-link
             >
           </div>
@@ -198,7 +198,7 @@
           <router-link
             @click.native="isToggle = !isToggle"
             class="nav-item nav-link"
-            to="/test"
+            to="/map"
             >concert map</router-link
           >
         </li>

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Map from "../views/Map.vue";
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,11 @@ const routes = [
           import(/* webpackChunkName: "Result" */ "../views/Results.vue"),
       },
     ],
+  },
+  {
+    path: "/map",
+    name: "Map",
+    component: Map,
   },
 ];
 
