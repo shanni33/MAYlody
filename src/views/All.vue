@@ -1,21 +1,25 @@
 <template>
-  <div class="test py-4">
+  <div>
     <div class="container card-container">
       <div class="row justify-content-center my-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <SearchBar :inputData="searchData" @on-search="returnSearch" />
+          <SearchBar
+            :inputData="searchData"
+            @on-search="returnSearch"
+            class="search"
+          />
         </div>
         <div
           class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2"
           v-if="filterData.length"
         >
-          <input type="checkbox" id="checkboxOne" v-model="selectAll" />
-          <label for="checkboxOne"> 全選</label>
+          <input type="checkbox" id="checkboxOne" v-model="selectAll" @click="check=!check"/>
+          <label for="checkboxOne"> {{check ? "取消" : "全選"}}</label>
         </div>
       </div>
-      <div class="row minor-bar my-2 m-auto" v-if="filterData.length">
+      <div class="row minor-bar my-2 justify-content-center" v-if="filterData.length">
         <button
-          class="m-auto sort-btn"
+          class="mx-auto sort-btn mx-2"
           @click="order = order * -1"
           :class="order === 1 ? 'descending' : 'ascending'"
         >
@@ -23,7 +27,6 @@
         </button>
         <span class="session"> 已選 {{ selected.length }} 場</span>
       </div>
-
       <div
         class="row justify-content-center my-2 tickets"
         v-if="filterData.length"
@@ -45,7 +48,6 @@
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
         <option>{{ filterData.length }}</option>
       </select>
-
       <paginate
         :page-count="totalPages"
         :click-handler="clickCallback"
@@ -62,9 +64,12 @@
       >
       </paginate>
     </div>
-    <button class="submit-btn" @click="submitData()" v-if="filterData.length">
-      送出
-    </button>
+    <div
+      class="scroll-top position-fixed h2 d-flex justify-content-center align-items-center"
+      @click="scrollToTop"
+    >
+      <span class="material-icons"> expand_less</span>
+    </div>
   </div>
 </template>
 <script>
@@ -79,6 +84,7 @@ export default {
   },
   data() {
     return {
+      check: false,
       currentPage: 0,
       filterData: [],
       order: 1,
@@ -88,6 +94,7 @@ export default {
       selected: JSON.parse(sessionStorage.mySelected || "[]"),
     };
   },
+
   computed: {
     selectAll: {
       get() {
@@ -185,33 +192,40 @@ export default {
       let results = this.countData(compressed);
       this.results = results;
       sessionStorage.myResults = JSON.stringify(results);
-      this.$router.push({ path: "/Result" });
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
+    ScrollHeight() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (scrollTop > 300) {
+        document.querySelector(".scroll-top").style.opacity = "1";
+      } else {
+        document.querySelector(".scroll-top").style.opacity = "0";
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.ScrollHeight);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.ScrollHeight);
   },
   watch: {
     selected: {
       deep: true,
       handler: function (value) {
         sessionStorage.mySelected = JSON.stringify(value);
+        this.submitData();
       },
     },
   },
 };
 </script>
 <style lang="scss">
-.test {
-  margin-top: 5.5rem !important;
-  margin-bottom: 0.5rem;
-  border: 1px solid rgba(white, 0.1);
-  border-radius: 20px;
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
-.tool-bar {
-  margin: 0;
-  align-items: center;
-}
 .search {
   border-radius: 50px !important;
 }
@@ -304,10 +318,6 @@ export default {
   color: white;
 }
 
-.tickets {
-  height: 58vh;
-  overflow-y: scroll;
-}
 .warning {
   color: white;
 }
@@ -329,11 +339,26 @@ export default {
   background-color: #b99362 !important;
 }
 
-.submit-btn {
-  background: linear-gradient(45deg, #b99362, #d3b288d0);
-  border: none;
-  border-radius: 50px;
-  padding: 0.5rem 1rem;
-  color: white;
+.scroll-top {
+  z-index: 999;
+  bottom: 110px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transition: all 0.5s ease-in-out 0s;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #6c757d;
+  color: #fff;
+  background: #b99362;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.3);
+  }
+}
+@media (min-width: 992px) {
+  .scroll-top {
+    right: 50px;
+  }
 }
 </style>

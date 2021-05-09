@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Map from "../views/Map.vue";
 
 Vue.use(VueRouter);
 
@@ -8,17 +9,50 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    redirect: "/home"
   },
+  {
+    path: "/home",
+    name: "Home",
+    component: Home,
+    },
+  // {
+  //   path: "/concerts",
+  //   name: "concerts",
+  //   component: () =>
+  //     import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
+  // },
   {
     path: "/concerts",
+    name: "concerts",
     component: () =>
-      import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
+      import(/* webpackChunkName: "Result" */ "../views/Concerts.vue"),
+    redirect: "/concerts/all",
+    children: [
+      {
+        path: "all",
+        name: "all",
+        component: () =>
+          import(/* webpackChunkName: "Result" */ "../views/All.vue"),
+      },
+      {
+        path: "selected",
+        name: "selected",
+        component: () =>
+          import(/* webpackChunkName: "Result" */ "../views/Selected.vue"),
+      },
+      {
+        path: "result",
+        name: "result",
+        component: () =>
+          import(/* webpackChunkName: "Result" */ "../views/Results.vue"),
+      },
+    ],
   },
   {
-    path: "/result",
-    component: () =>
-      import(/* webpackChunkName: "Result" */ "../views/Result.vue"),
+    path: "/map",
+    name: "Map",
+    component: Map,
   },
 ];
 

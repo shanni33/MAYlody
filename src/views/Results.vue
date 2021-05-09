@@ -1,9 +1,9 @@
 <template>
-  <div class="test py-5">
+  <div>
     <div class="container card-container">
       <div class="row justify-content-center py-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <SearchBar :inputData="parseData" @on-search="returnSearch" />
+          <SearchBar :inputData="parseData" @on-search="returnSearch" class="search"/>
         </div>
       </div>
       <div class="row minor-bar py-2 m-auto">
@@ -63,6 +63,12 @@
       >
       </paginate>
     </div>
+    <div
+      class="scroll-top position-fixed h2 d-flex justify-content-center align-items-center"
+      @click="scrollToTop"
+    >
+      <span class="material-icons"> expand_less</span>
+    </div>
   </div>
 </template>
 <script>
@@ -107,6 +113,26 @@ export default {
     returnSearch: function (outputData) {
       this.filterData = outputData;
     },
+    scrollToTop() {
+      window.scrollTo(0, 0);
+    },
+    ScrollHeight() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (scrollTop > 300) {
+        document.querySelector(".scroll-top").style.opacity = "1";
+      } else {
+        document.querySelector(".scroll-top").style.opacity = "0";
+      }
+    },
+  },
+  mounted() {
+    window.addEventListener("scroll", this.ScrollHeight);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.ScrollHeight);
   },
 };
 </script>
@@ -123,6 +149,9 @@ export default {
 .result-card {
   margin: 1rem;
   width: 18rem;
+  .material-icons{
+    color: #b99362;
+  }
 }
 
 .left,
@@ -131,8 +160,8 @@ export default {
     to bottom,
     #b99362 0%,
     #b99362 8%,
-    #eeeeee 8%,
-    #eeeeee 100%
+    #fffffd 8%,
+    #fffffd 100%
   );
   position: relative;
   height: 6em;
@@ -173,5 +202,39 @@ export default {
 
 h6.inner-text {
   margin-bottom: 0;
+}
+
+.page-link {
+  border-radius: 100%;
+  border: none !important;
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.page-item.active .page-link {
+  background-color: #b99362 !important;
+}
+
+.scroll-top {
+  z-index: 999;
+  bottom: 110px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transition: all 0.5s ease-in-out 0s;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #6c757d;
+  color: #fff;
+  background: #b99362;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.3);
+  }
+}
+@media (min-width: 992px) {
+  .scroll-top {
+    right: 50px;
+  }
 }
 </style>
