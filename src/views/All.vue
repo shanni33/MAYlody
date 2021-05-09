@@ -73,7 +73,7 @@
   </div>
 </template>
 <script>
-import ConcertDatas from "../assets/dataset.json";
+import ConcertDatas from "../assets/new_dataset.json";
 import SearchBar from "@/components/SearchBar.vue";
 import TicketCard from "@/components/TicketCard.vue";
 
