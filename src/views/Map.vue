@@ -47,7 +47,35 @@ export default {
       onEachFeature: popUp,
     });
     markers.addLayer(points).addTo(osmMap);
-    
+    // function openPopUp(id, clusterId){
+    //     osmMap.closePopup(); //which will close all popups
+    //     osmMap.eachLayer(function(layer){     //iterate over map layer
+    //         if (layer._leaflet_id == clusterId){         // if layer is markerCluster
+    //             layer.spiderfy(); //spiederfies our cluster
+    //         }
+    //     });
+    //     osmMap.eachLayer(function(layer){     //iterate over map rather than clusters
+    //         if (layer._leaflet_id == id){         // if layer is marker
+    //             layer.openPopup();
+    //         }
+    //     });
+    // }
+    markers.on('clusterclick', function(a){
+        if(a.layer._zoom == 18){
+            var popUpText = '<ul>';
+            //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
+            //let's work with the data:
+            for (var feat in a.layer._markers){
+              console.log(feat);
+              console.log(a.layer._markers);
+              popUpText+= '<li>' + a.layer._markers[feat].feature.properties['event'] + ', ' + a.layer._markers[feat].feature.properties['date'] + '</li>';
+              // popUpText+= `<li><u onclick='openPopUp("${a.layer._markers[feat]._leaflet_id}, ${a.layer._leaflet_id}");'> ${a.layer._markers[feat].feature.properties['name']} + ,  + ${a.layer._markers[feat].feature.properties['date']} </u></li>`;
+            }
+            popUpText += '</ul>';
+            //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
+            L.popup().setLatLng([a.layer._cLatLng.lat, a.layer._cLatLng.lng]).setContent(popUpText).openOn(osmMap); 
+        }
+    })
   },
 };
 </script>
