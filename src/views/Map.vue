@@ -44,10 +44,8 @@ export default {
           var popUpText = "<ul>";
           //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
           for (var marker in a.layer._markers) {
-            popUpText += `<li>${a.layer._markers[marker].feature.properties["event"]}, ${a.layer._markers[marker].feature.properties["date"]}</li>`;
-            //popUpText+= `<li><u onclick="$vm.openPopUp(${a.layer._markers[marker]._leaflet_id},${a.layer._leaflet_id})"> ${a.layer._markers[marker].feature.properties['event']},${a.layer._markers[marker].feature.properties['date']} </u></li>`;
-            //popUpText+= '<li><u onclick="$vm.openPopUp(${a.layer._markers[marker]._leaflet_id},${a.layer._leaflet_id})"> ${a.layer._markers[marker].feature.properties['event']},${a.layer._markers[marker].feature.properties['date']} </u></li>';
-            // popUpText+= '<li><u onclick="app.openPopUp(' + a.layer._markers[marker]._leaflet_id + ','+ a.layer._leaflet_id +')">' + a.layer._markers[marker].feature.properties['event'] + ', ' + a.layer._markers[marker].feature.properties['date'] + '</u></li>';
+            /* popUpText += `<li>${a.layer._markers[marker].feature.properties["event"]}, ${a.layer._markers[marker].feature.properties["date"]}</li>`; */
+            popUpText+= '<li><u style="cursor:pointer;" onclick="openPopUp(' + a.layer._markers[marker]._leaflet_id + ','+ a.layer._leaflet_id +')">' + a.layer._markers[marker].feature.properties['event'] + ', ' + a.layer._markers[marker].feature.properties['date'] + '</u></li>';
           }
           popUpText += "</ul>";
           //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
@@ -99,6 +97,9 @@ export default {
     this.initMap();
     this.addMarkers();
   },
+  created(){
+    window.openPopUp = this.openPopUp;
+  }
 };
 </script>
 
