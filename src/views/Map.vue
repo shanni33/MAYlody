@@ -9,15 +9,18 @@ import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/leaflet.markercluster";
-// import dataSet from "../assets/ConcertGeoJson.json";
 
 let osmMap = {};
 
 export default {
   data() {
     return {
-      rawData: [],
     };
+  },
+  computed: {
+    rawData(){
+      return this.$store.state.rawData;
+    },
   },
   methods: {
     addMarkers() {
@@ -57,17 +60,17 @@ export default {
       });
       
     },
-    getData() {
-      this.axios
-        .get("http://localhost:3000/api/data")
-        .then((res) => {
-          this.rawData = res.data.features;
-          this.addMarkers();
-        })
-        .catch((error) => {
-          "oops! error:", error.message;
-        });
-    },
+    // getData() {
+    //   this.axios
+    //     .get("http://localhost:3000/api/data")
+    //     .then((res) => {
+    //       this.rawData = res.data.features;
+    //       this.addMarkers();
+    //     })
+    //     .catch((error) => {
+    //       "oops! error:", error.message;
+    //     });
+    // },
     initMap() {
       // initiation
       osmMap = L.map("map", {
@@ -106,11 +109,13 @@ export default {
   },
   mounted() {
     this.initMap();
-    this.getData();
+    // let vm = this;
+    // this.$store.dispatch("DATAS_READ").then(() => vm.addMarkers()).catch((e)=>console.log(e));
+    this.$store.dispatch("DATAS_READ");
+    this.addMarkers();
   },
   created(){
     window.openPopUp = this.openPopUp;
-    
   }
 };
 </script>

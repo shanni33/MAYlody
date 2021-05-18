@@ -4,7 +4,7 @@
       <div class="row justify-content-center my-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
           <SearchBar
-            :inputData="searchData"
+            :inputData="purifyData"
             @on-search="returnSearch"
             class="search"
           />
@@ -99,7 +99,7 @@ export default {
       perPage: 12,
       searchData: [],
       selected: JSON.parse(sessionStorage.mySelected || "[]"),
-      rawData: [],
+      // rawData: [],
     };
   },
 
@@ -144,6 +144,16 @@ export default {
       return copy.sort(
         (a, b) => (new Date(b.date) - new Date(a.date)) * this.order
       );
+    },
+    purifyData(){
+      let newData = [];
+      this.rawData.forEach((item) => {
+        newData.push(item.properties)
+      })
+      return newData;
+    },
+    rawData(){
+      return this.$store.state.rawData;
     },
     totalPages() {
       if (this.filterData.length % this.perPage === 0) {
@@ -191,25 +201,7 @@ export default {
         }
       }
       return results;
-    },
-    getData: function () {
-      this.axios
-        .get("http://localhost:3000/api/data")
-        .then((res) => {
-          this.rawData = res.data.features;
-          this.searchData = this.purifyData(this.rawData);
-        })
-        .catch((error) => {
-          "oops! error:", error.message;
-        });
-    },
-    purifyData: function(arr){
-      let newData = [];
-      arr.forEach((item) => {
-        newData.push(item.properties)
-      })
-      return newData;
-    },
+    },  
     returnSearch: function (outputData) {     
       this.filterData = outputData;
     },
@@ -250,7 +242,7 @@ export default {
     },
   },
   created() {   
-    this.getData();
+    this.$store.dispatch("DATAS_READ");
   },
 };
 </script>
