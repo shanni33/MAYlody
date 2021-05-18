@@ -9,14 +9,14 @@ import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/leaflet.markercluster";
-import dataSet from "../assets/ConcertGeoJson.json";
+// import dataSet from "../assets/ConcertGeoJson.json";
 
 let osmMap = {};
 
 export default {
   data() {
     return {
-      inputData: dataSet["features"],
+      rawData: [],
     };
   },
   methods: {
@@ -34,7 +34,7 @@ export default {
         layer.bindPopup(text);
       }
 
-      var points = L.geoJSON(this.inputData, {
+      var points = L.geoJSON(this.rawData, {
         onEachFeature: popUp,
       });
       markers.addLayer(points).addTo(osmMap);
@@ -56,6 +56,17 @@ export default {
         }
       });
       
+    },
+    getData() {
+      this.axios
+        .get("http://localhost:3000/api/data")
+        .then((res) => {
+          this.rawData = res.data.features;
+          this.addMarkers();
+        })
+        .catch((error) => {
+          "oops! error:", error.message;
+        });
     },
     initMap() {
       // initiation
@@ -91,14 +102,15 @@ export default {
             layer.openPopup();
           }
         });
-      }
+    }
   },
   mounted() {
     this.initMap();
-    this.addMarkers();
+    this.getData();
   },
   created(){
     window.openPopUp = this.openPopUp;
+    
   }
 };
 </script>

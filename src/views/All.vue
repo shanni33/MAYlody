@@ -13,11 +13,19 @@
           class="check-all-btn col-3 col-sm-2 col-md-2 col-lg-2"
           v-if="filterData.length"
         >
-          <input type="checkbox" id="checkboxOne" v-model="selectAll" @click="check=!check"/>
-          <label for="checkboxOne"> {{check ? "取消" : "全選"}}</label>
+          <input
+            type="checkbox"
+            id="checkboxOne"
+            v-model="selectAll"
+            @click="check = !check"
+          />
+          <label for="checkboxOne"> {{ check ? "取消" : "全選" }}</label>
         </div>
       </div>
-      <div class="row minor-bar my-2 justify-content-center" v-if="filterData.length">
+      <div
+        class="row minor-bar my-2 justify-content-center"
+        v-if="filterData.length"
+      >
         <button
           class="mx-auto sort-btn mx-2"
           @click="order = order * -1"
@@ -73,7 +81,6 @@
   </div>
 </template>
 <script>
-import ConcertDatas from "../assets/new_dataset.json";
 import SearchBar from "@/components/SearchBar.vue";
 import TicketCard from "@/components/TicketCard.vue";
 
@@ -90,8 +97,9 @@ export default {
       order: 1,
       pages: [12, 24, 36, 48, 60],
       perPage: 12,
-      searchData: ConcertDatas,
+      searchData: [],
       selected: JSON.parse(sessionStorage.mySelected || "[]"),
+      rawData: [],
     };
   },
 
@@ -184,7 +192,25 @@ export default {
       }
       return results;
     },
-    returnSearch: function (outputData) {
+    getData: function () {
+      this.axios
+        .get("http://localhost:3000/api/data")
+        .then((res) => {
+          this.rawData = res.data.features;
+          this.searchData = this.purifyData(this.rawData);
+        })
+        .catch((error) => {
+          "oops! error:", error.message;
+        });
+    },
+    purifyData: function(arr){
+      let newData = [];
+      arr.forEach((item) => {
+        newData.push(item.properties)
+      })
+      return newData;
+    },
+    returnSearch: function (outputData) {     
       this.filterData = outputData;
     },
     submitData: function () {
@@ -196,7 +222,7 @@ export default {
     scrollToTop() {
       window.scrollTo(0, 0);
     },
-    ScrollHeight() {
+    scrollHeight() {
       let scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
@@ -222,6 +248,9 @@ export default {
         this.submitData();
       },
     },
+  },
+  created() {   
+    this.getData();
   },
 };
 </script>
