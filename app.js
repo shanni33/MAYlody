@@ -4,7 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const config = require("./config/db");
 const Concert = require("./models/concert");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3030;
 
 var corsOptions = {
   origin: "http://localhost:8080",
@@ -18,6 +18,7 @@ app.use(
     extended: true,
   })
 );
+app.use(express.static('dist'))
 
 // connect to MongoDB
 mongoose
