@@ -1,26 +1,100 @@
 const express = require("express");
 const app = express();
-const routers = express.Router();
-// const data = require("./src/assets/ConcertGeoJson.json");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const config = require("./config/db");
+const Concert = require("./models/concert");
+const PORT = process.env.PORT || 3000;
 
-var allowCrossDomain = function(req, res, next) {//設定response頭部的中介軟體
-    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');//8089是vue專案的埠，這裡相對於白名單
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    res.header('Access-Control-Allow-Credentials','true');
-    next();
-    };
-app.use(allowCrossDomain);
-app.get("/api/data",function (request, response) {
-    var data = require('./src/assets/ConcertGeoJson.json');
-    response.send(data);
-})
+var corsOptions = {
+  origin: "http://localhost:8080",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(
+  express.urlencoded({
+    extended: true,
+  })
+);
 
-app.get('*',(request, respones) => {
-    respones.end("ok");
-})
+// connect to MongoDB
+mongoose
+  .connect(config.mongodb, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB.");
+  })
+  .catch((err) => {
+    console.log("Connection Failed.");
+    console.log(err);
+  });
+mongoose.Promise = global.Promise;
 
-app.listen(3000,() => {
-    console.log("服務已啟動")
+// query all concert
+app.get("/api/concerts", (req, res) => {
+  Concert.find({})
+    .then((concerts) => {
+      concertsData = concerts;
+      res.json(concerts);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
 });
 
+// update concert
+app.patch("/api/concerts/:id", (req, res) => {
+  let obj = req.body.content;
+
+  Concert.findOneAndUpdate(
+    { "properties.id": req.params.id },
+    {
+      $set: obj,
+    },
+    { new: true }
+  )
+    .then((concert) => res.json(concert))
+    .catch((err) => res.json(err));
+});
+
+// create concert
+app.post("/api/concerts", (req, res) => {
+  let obj = req.body.content;
+
+  query = Concert.findOne(
+    {},
+    {},
+    {
+      sort: { "properties.id": -1 },
+      function(err, obj) {
+        console.log(err);
+      },
+    }
+  );
+  query.then(function (data) {
+    let lastId = data.properties.id;
+    console.log(lastId);
+    obj.properties.id = lastId + 1;
+
+    let concert = new Concert(obj);
+    concert
+      .save()
+      .then((concert) => {
+        res.json(concert);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
+  });
+});
+
+app.listen(PORT, () => {
+  console.log("Server is running");
+});
+
+module.exports = app;
