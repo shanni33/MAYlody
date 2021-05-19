@@ -22,7 +22,7 @@ app.use(express.static('dist'))
 
 // connect to MongoDB
 mongoose
-  .connect(config.mongodb||process.env.MONGODB_URI, {
+  .connect(config.mongodb, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
