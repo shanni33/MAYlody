@@ -60,17 +60,6 @@ export default {
       });
       
     },
-    // getData() {
-    //   this.axios
-    //     .get("http://localhost:3000/api/data")
-    //     .then((res) => {
-    //       this.rawData = res.data.features;
-    //       this.addMarkers();
-    //     })
-    //     .catch((error) => {
-    //       "oops! error:", error.message;
-    //     });
-    // },
     initMap() {
       // initiation
       osmMap = L.map("map", {
@@ -111,7 +100,7 @@ export default {
     this.initMap();
     // let vm = this;
     // this.$store.dispatch("DATAS_READ").then(() => vm.addMarkers()).catch((e)=>console.log(e));
-    this.$store.dispatch("DATAS_READ");
+    this.$store.dispatch("CONCERTS_READ");
     this.addMarkers();
   },
   created(){

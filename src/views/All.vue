@@ -7,6 +7,7 @@
             :inputData="purifyData"
             @on-search="returnSearch"
             class="search"
+            v-if="isLoad"
           />
         </div>
         <div
@@ -94,6 +95,7 @@ export default {
       check: false,
       currentPage: 0,
       filterData: [],
+      isLoad: false,
       order: 1,
       pages: [12, 24, 36, 48, 60],
       perPage: 12,
@@ -227,7 +229,7 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("scroll", this.ScrollHeight);
+    window.addEventListener("scroll", this.scrollHeight);
   },
   destroyed() {
     window.removeEventListener("scroll", this.ScrollHeight);
@@ -242,7 +244,7 @@ export default {
     },
   },
   created() {   
-    this.$store.dispatch("DATAS_READ");
+    this.$store.dispatch("CONCERTS_READ").then(() => {this.isLoad = true;});
   },
 };
 </script>
