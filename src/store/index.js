@@ -29,7 +29,7 @@ export default new Vuex.Store({
         });
     },
     CONCERTS_READ(context) {
-      return axios.get("http://maylody.herokuapp.com/api/concerts").then((res) => {
+      return axios.get("https://maylody.herokuapp.com/api/concerts").then((res) => {
         context.commit("setConcerts", res.data);
       });
     },
@@ -40,7 +40,7 @@ export default new Vuex.Store({
       // });
       // if (!item) return false;
       return axios
-        .patch(`http://maylody.herokuapp.com/api/concerts/${id}`, {
+        .patch(`https://maylody.herokuapp.com/api/concerts/${id}`, {
           content: input,
         })
         .then(() => {
