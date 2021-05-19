@@ -8,7 +8,6 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home",
     redirect: "/home"
   },
   {
@@ -16,12 +15,6 @@ const routes = [
     name: "Home",
     component: Home,
     },
-  // {
-  //   path: "/concerts",
-  //   name: "concerts",
-  //   component: () =>
-  //     import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
-  // },
   {
     path: "/concerts",
     name: "concerts",
@@ -54,6 +47,12 @@ const routes = [
     name: "Map",
     component: Map,
   },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: () =>
+      import(/* webpackChunkName: "Result" */ "../views/Dashboard.vue"),
+  }
 ];
 
 const router = new VueRouter({
