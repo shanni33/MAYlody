@@ -98,10 +98,7 @@ export default {
   },
   mounted() {
     this.initMap();
-    // let vm = this;
-    // this.$store.dispatch("DATAS_READ").then(() => vm.addMarkers()).catch((e)=>console.log(e));
-    this.$store.dispatch("CONCERTS_READ");
-    this.addMarkers();
+    this.$store.dispatch("CONCERTS_READ").then(() => this.addMarkers()).catch((e)=>console.log(e));
   },
   created(){
     window.openPopUp = this.openPopUp;
