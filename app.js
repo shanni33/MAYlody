@@ -94,6 +94,10 @@ app.post("/api/concerts", (req, res) => {
   });
 });
 
+app.get('/', (req,res) => {
+  res.send('Hello Express!')
+})
+
 app.listen(PORT, () => {
   console.log("Server is running");
 });
