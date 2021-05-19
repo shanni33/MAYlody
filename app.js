@@ -21,7 +21,7 @@ app.use(
 
 // connect to MongoDB
 mongoose
-  .connect(config.mongodb, {
+  .connect(config.mongodb||process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
