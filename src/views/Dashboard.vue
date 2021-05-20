@@ -1,281 +1,117 @@
 <template>
   <div class="concert-list-continer py-4">
     <div class="table-content">
-      <button
-        type="button"
-        class="btn btn-primary my-3"
-        data-toggle="modal"
-        data-target="#createModal"
-      >
-        新增演唱會
-      </button>
-      <div
-        class="modal fade"
+      <b-button class="my-3" v-b-modal.createModal>新增演唱會</b-button>
+      <b-modal
         id="createModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="createModalLabel"
-        aria-hidden="true"
+        @hidden="closeModal"
+        @ok="createConcert()"
+        title="新增演唱會"
       >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="createModalLabel">新增演唱會資訊</h5>
-              <button
-                @click="closeModal()"
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="series" class="col-form-label">主題:</label>
-                  <input
-                    v-model="inputSeries"
-                    type="text"
-                    class="form-control"
-                    id="series"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="event" class="col-form-label">演唱會:</label>
-                  <input
-                    v-model="inputEvent"
-                    type="text"
-                    class="form-control"
-                    id="event"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="date" class="col-form-label">日期:</label>
-                  <input
-                    v-model="inputDate"
-                    type="text"
-                    class="form-control"
-                    id="date"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="city" class="col-form-label">地點:</label>
-                  <input
-                    v-model="inputCity"
-                    type="text"
-                    class="form-control"
-                    id="city"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="loc" class="col-form-label">城市:</label>
-                  <input
-                    v-model="inputLoc"
-                    type="text"
-                    class="form-control"
-                    id="loc"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="lng" class="col-form-label">經度:</label>
-                  <input
-                    v-model="inputLng"
-                    type="text"
-                    class="form-control"
-                    id="lng"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="lat" class="col-form-label">緯度:</label>
-                  <input
-                    v-model="inputLat"
-                    type="text"
-                    class="form-control"
-                    id="lat"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="songs" class="col-form-label">歌曲:</label>
-                  <textarea
-                    v-model="inputSongs"
-                    class="form-control"
-                    id="songs"
-                  ></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                @click="closeModal()"
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                取消
-              </button>
-              <button
-                @click="createConcert()"
-                type="button"
-                class="btn btn-primary"
-              >
-                新增
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th colspan="1">演唱會</th>
-            <th colspan="1">日期</th>
-            <th colspan="1">地點</th>
-            <th colspan="1">修改</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="data in rawData" :key="data.properties.id">
-            <td>{{ data.properties.event }}</td>
-            <td>{{ data.properties.date }}</td>
-            <td>{{ data.properties.city }}</td>
-            <td>
-              <button
-                @click="openUpdateModal(data)"
-                type="button"
-                class="btn btn-primary"
-                data-toggle="modal"
-                data-target="#updateModal"
-              >
-                修改
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div
-        class="modal fade"
+        <form ref="form">
+          <b-form-group label="主題:" label-for="series-input">
+            <b-form-input
+              id="series-input"
+              v-model="inputSeries"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            label="演唱會:"
+            label-for="event-input"
+            invalid-feedback="演唱會名稱必須填寫"
+          >
+            <b-form-input
+              id="event-input"
+              v-model="inputEvent"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group label="日期:" label-for="date-input">
+            <b-form-input id="date-input" v-model="inputDate"></b-form-input>
+          </b-form-group>
+          <b-form-group label="城市:" label-for="loc-input">
+            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
+          </b-form-group>
+          <b-form-group label="地點:" label-for="city-input">
+            <b-form-input id="city-input" v-model="inputCity"></b-form-input>
+          </b-form-group>
+          <b-form-group label="經度:" label-for="lng-input">
+            <b-form-input id="lng-input" v-model="inputLng"></b-form-input>
+          </b-form-group>
+          <b-form-group label="緯度:" label-for="lat-input">
+            <b-form-input id="lat-input" v-model="inputLat"></b-form-input>
+          </b-form-group>
+          <b-form-group label="歌曲:" label-for="songs-input">
+            <b-form-input id="songs-input" v-model="inputSongs"></b-form-input>
+          </b-form-group>
+        </form>
+      </b-modal>
+
+      <b-table class="table-hover" :items="rawData" :fields="fields" light>
+        <template #cell(event)="data">
+          {{ data.item.properties.event }}
+        </template>
+        <template #cell(date)="data">
+          {{ data.item.properties.date }}
+        </template>
+        <template #cell(city)="data">
+          {{ data.item.properties.city }}
+        </template>
+        <template #cell(edit)="data">
+          <b-button
+            class="my-1"
+            v-b-modal.updateModal
+            @click="openUpdateModal(data.item)"
+            >修改</b-button
+          >
+        </template>
+      </b-table>
+
+      <b-modal
         id="updateModal"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="updateModalLabel"
-        aria-hidden="true"
+        @hidden="closeModal"
+        @ok="updateConcert()"
+        title="修改演唱會"
       >
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="updateModalLabel">修改演唱會資訊</h5>
-              <button
-                @click="closeModal()"
-                type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="series" class="col-form-label">主題:</label>
-                  <input
-                    v-model="inputSeries"
-                    type="text"
-                    class="form-control"
-                    id="series"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="event" class="col-form-label">演唱會:</label>
-                  <input
-                    v-model="inputEvent"
-                    type="text"
-                    class="form-control"
-                    id="event"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="date" class="col-form-label">日期:</label>
-                  <input
-                    v-model="inputDate"
-                    type="text"
-                    class="form-control"
-                    id="date"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="city" class="col-form-label">地點:</label>
-                  <input
-                    v-model="inputCity"
-                    type="text"
-                    class="form-control"
-                    id="city"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="loc" class="col-form-label">城市:</label>
-                  <input
-                    v-model="inputLoc"
-                    type="text"
-                    class="form-control"
-                    id="loc"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="lng" class="col-form-label">經度:</label>
-                  <input
-                    v-model="inputLng"
-                    type="text"
-                    class="form-control"
-                    id="lng"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="lat" class="col-form-label">緯度:</label>
-                  <input
-                    v-model="inputLat"
-                    type="text"
-                    class="form-control"
-                    id="lat"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="songs" class="col-form-label">歌曲:</label>
-                  <textarea
-                    v-model="inputSongs"
-                    class="form-control"
-                    id="songs"
-                  ></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button
-                @click="closeModal()"
-                type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                取消
-              </button>
-              <button
-                @click="updateConcert()"
-                type="button"
-                class="btn btn-primary"
-              >
-                修改
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <form ref="form">
+          <b-form-group label="主題:" label-for="series-input">
+            <b-form-input
+              id="series-input"
+              v-model="inputSeries"
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group
+            label="演唱會:"
+            label-for="event-input"
+            invalid-feedback="演唱會名稱必須填寫"
+          >
+            <b-form-input
+              id="event-input"
+              v-model="inputEvent"
+              required
+            ></b-form-input>
+          </b-form-group>
+          <b-form-group label="日期:" label-for="date-input">
+            <b-form-input id="date-input" v-model="inputDate"></b-form-input>
+          </b-form-group>
+          <b-form-group label="城市:" label-for="loc-input">
+            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
+          </b-form-group>
+          <b-form-group label="地點:" label-for="city-input">
+            <b-form-input id="city-input" v-model="inputCity"></b-form-input>
+          </b-form-group>
+          <b-form-group label="經度:" label-for="lng-input">
+            <b-form-input id="lng-input" v-model="inputLng"></b-form-input>
+          </b-form-group>
+          <b-form-group label="緯度:" label-for="lat-input">
+            <b-form-input id="lat-input" v-model="inputLat"></b-form-input>
+          </b-form-group>
+          <b-form-group label="歌曲:" label-for="songs-input">
+            <b-form-input id="songs-input" v-model="inputSongs"></b-form-input>
+          </b-form-group>
+        </form>
+      </b-modal>
     </div>
-    <!-- <li v-for="data in rawData" :key="data.properties.id">
-      {{ data.properties.event }}, {{ data.properties.city }},
-      {{ data.properties.loc }}, {{ data.properties.date }}
-    </li> -->
   </div>
 </template>
 <script>
@@ -291,6 +127,14 @@ export default {
       inputLng: "",
       inputDate: "",
       concertId: "",
+      modalShow: false,
+      moShow: false,
+      fields: [
+        { key: "event", label: "演唱會" },
+        { key: "date", label: "日期" },
+        { key: "city", label: "地點" },
+        { key: "edit", label: "修改" },
+      ],
     };
   },
   computed: {
@@ -300,6 +144,7 @@ export default {
   },
   methods: {
     createConcert() {
+      console.log("create");
       let _songs = this.inputSongs.split(",");
 
       let obj = {
@@ -317,14 +162,13 @@ export default {
           coordinates: [this.inputLat, this.inputLng],
         },
       };
-      this.$store
-        .dispatch("CONCERTS_CREATE", {input: obj })
-        .then(() => {
-          this.closeModal();
-          this.$store.dispatch("CONCERTS_READ");
-        });
+      this.$store.dispatch("CONCERTS_CREATE", { input: obj }).then(() => {
+        // this.closeModal();
+        this.$store.dispatch("CONCERTS_READ");
+      });
     },
     closeModal() {
+      console.log("close");
       this.inputEvent = "";
       this.inputCity = "";
       this.inputLoc = "";
@@ -336,7 +180,6 @@ export default {
       this.concertId = "";
     },
     openUpdateModal(data) {
-      console.log(data);
       this.inputEvent = data.properties.event;
       this.inputCity = data.properties.city;
       this.inputLoc = data.properties.loc;
@@ -348,11 +191,12 @@ export default {
       this.concertId = data.properties.id;
     },
     updateConcert() {
+      console.log("update");
       let id = this.concertId;
       let _songs = this.inputSongs.split(",");
       let obj = {
         properties: {
-          id: id, 
+          id: id,
           event: this.inputEvent,
           city: this.inputCity,
           loc: this.inputLoc,
@@ -367,7 +211,7 @@ export default {
       this.$store
         .dispatch("CONCERTS_UPDATE", { id: id, input: obj })
         .then(() => {
-          this.closeModal();
+          // this.closeModal();
           this.$store.dispatch("CONCERTS_READ");
         });
     },
@@ -381,20 +225,51 @@ export default {
 .concert-list-continer {
   margin-top: 8rem;
 }
+
 .table-content {
   margin: 1rem;
 }
+
 table {
   width: 100%;
-}
-table,
-th,
-td {
-  border: 1px solid black;
+  border-collapse: separate !important;
+  border-spacing: 0 0.85rem !important;
+  color: #222;
 }
 
-#updateModal,
-#createModal {
-  color: black;
+.table .dropdown {
+  display: inline-block;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+  margin-bottom: 10px;
+  border: none;
+}
+
+.table td {
+  background: #fff;
+}
+
+.table thead tr,
+.table thead th {
+  color: #fff;
+  border: none;
+}
+
+.table td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.table td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.table-hover tbody tr:hover td {
+  background: rgba(187, 184, 184, 0.233);
+  color: #fff;
 }
 </style>
