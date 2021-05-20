@@ -18,7 +18,7 @@ app.use(
     extended: true,
   })
 );
-app.use(express.static('dist'))
+app.use(express.static("dist"));
 
 // connect to MongoDB
 mongoose
@@ -36,12 +36,28 @@ mongoose
   });
 mongoose.Promise = global.Promise;
 
-// query all concert
+app.get("/", (req, res) => {
+  res.send("Hello Express!");
+});
+
+// query all concerts
 app.get("/api/concerts", (req, res) => {
   Concert.find({})
     .then((concerts) => {
       concertsData = concerts;
       res.json(concerts);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
+// query one concert
+app.get("/api/concerts/:id", (req, res) => {
+  console.log(req.params.id)
+  Concert.find({ "properties.id": req.params.id })
+    .then((concert) => {
+      res.json(concert);
     })
     .catch((err) => {
       res.json(err);
@@ -93,10 +109,6 @@ app.post("/api/concerts", (req, res) => {
       });
   });
 });
-
-app.get('/', (req,res) => {
-  res.send('Hello Express!')
-})
 
 app.listen(PORT, () => {
   console.log("Server is running");
