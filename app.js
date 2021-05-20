@@ -54,7 +54,7 @@ app.get("/api/concerts", (req, res) => {
 
 // query one concert
 app.get("/api/concerts/:id", (req, res) => {
-  console.log(req.params.id)
+  console.log(req.params.id);
   Concert.find({ "properties.id": req.params.id })
     .then((concert) => {
       res.json(concert);
@@ -67,7 +67,6 @@ app.get("/api/concerts/:id", (req, res) => {
 // update concert
 app.patch("/api/concerts/:id", (req, res) => {
   let obj = req.body.content;
-
   Concert.findOneAndUpdate(
     { "properties.id": req.params.id },
     {
@@ -82,7 +81,6 @@ app.patch("/api/concerts/:id", (req, res) => {
 // create concert
 app.post("/api/concerts", (req, res) => {
   let obj = req.body.content;
-
   query = Concert.findOne(
     {},
     {},
