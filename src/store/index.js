@@ -18,7 +18,7 @@ export default new Vuex.Store({
     CONCERTS_CREATE(context, { input }) {
       console.log(input);
       return axios
-        .post(`http://localhost:3000/api/concerts`, {
+        .post(`https://maylody.herokuapp.com/api/concerts`, {
           content: input,
         })
         .then(() => {
@@ -35,10 +35,6 @@ export default new Vuex.Store({
     },
     CONCERTS_UPDATE(context, { id, input }) {
       console.log(input);
-      // let item = context.state.contents.find((item) => {
-      //   return item.properties.id == id;
-      // });
-      // if (!item) return false;
       return axios
         .patch(`https://maylody.herokuapp.com/api/concerts/${id}`, {
           content: input,

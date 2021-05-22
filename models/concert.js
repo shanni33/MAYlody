@@ -24,7 +24,10 @@ const concertSchema = new mongoose.Schema({
       type: String,
       default: "Point",
     },
-    coordinates: Array,
+    coordinates: [
+      { type: Number, min: -180, max: 180 },
+      { type: Number, min: -90, max: 90 },
+    ],
   },
 });
 

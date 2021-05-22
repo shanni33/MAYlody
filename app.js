@@ -4,7 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const config = require("./config/db");
 const Concert = require("./models/concert");
-const PORT = process.env.PORT || 3030;
+const PORT = 3030;
 
 var corsOptions = {
   origin: "http://localhost:8080",
@@ -86,9 +86,6 @@ app.post("/api/concerts", (req, res) => {
     {},
     {
       sort: { "properties.id": -1 },
-      function(err, obj) {
-        console.log(err);
-      },
     }
   );
   query.then(function (data) {

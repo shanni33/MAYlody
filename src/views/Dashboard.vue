@@ -1,6 +1,6 @@
 <template>
   <div class="concert-list-continer py-4">
-    <div class="table-content">
+    <div class="table-content container mx-auto">
       <b-button class="my-3" v-b-modal.createModal>新增演唱會</b-button>
       <b-modal
         id="createModal"
@@ -159,7 +159,7 @@ export default {
         },
         geometry: {
           type: "Point",
-          coordinates: [this.inputLat, this.inputLng],
+          coordinates: [this.inputLng, this.inputLat],
         },
       };
       this.$store.dispatch("CONCERTS_CREATE", { input: obj }).then(() => {
@@ -205,7 +205,7 @@ export default {
           songs: _songs,
         },
         geometry: {
-          coordinates: [this.inputLat, this.inputLng],
+          coordinates: [this.inputLng, this.inputLat],
         },
       };
       this.$store
@@ -218,6 +218,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("CONCERTS_READ");
+    console.info("process.env.DEV :", process.env.PORT);
   },
 };
 </script>
