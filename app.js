@@ -4,7 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const config = require("./config/db");
 const Concert = require("./models/concert");
-const PORT = 3030;
+const PORT = process.env.PORT || 3030;
 
 var corsOptions = {
   origin: "http://localhost:8080",
