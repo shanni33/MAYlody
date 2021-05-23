@@ -34,8 +34,7 @@ opts.secretOrKey = process.env.SECRET;
 
 passport.use(
   new JwtStrategy(opts, function (jwt_payload, done) {
-    
-    User.findOne({id: jwt_payload.sub}, function (err, user) {
+    User.findOne({ id: jwt_payload.sub }, function (err, user) {
       if (err) {
         return done(err, false);
       }
@@ -76,34 +75,35 @@ app.get("/", (req, res) => {
 });
 
 // create an account
-app.post("/signup", function (req, res) {
-  let obj = req.body;
-  let user = new User(obj);
+// app.post("/signup", function (req, res) {
+//   let obj = req.body;
+//   let user = new User(obj);
 
-  // save user with hashed password
-  User.register(user, obj.password, (err, user) => {
-    if (err) {
-      console.log(err);
-      res.json({
-        success: false,
-        message: "Username has been registered. Please check."
-      })
-      res.redirect("/signup");
-    } else {
-      res.json({
-        success: true,
-        message: "Account has been created. You can login now."
-      });
-    }
-  });
-});
+//   // save user with hashed password
+//   User.register(user, obj.password, (err, user) => {
+//     if (err) {
+//       console.log(err);
+//       res.json({
+//         success: false,
+//         message: "Username has been registered. Please check.",
+//       });
+//       res.redirect("/signup");
+//     } else {
+//       res.json({
+//         success: true,
+//         message: "Account has been created. You can login now.",
+//       });
+//     }
+//   });
+// });
 
 // login
 app.post(
   "/login",
-  passport.authenticate("local", { failureRedirect: "/login" }),
+  passport.authenticate("local"),
   (req, res) => {
-    var token = jwt.sign(req.body, process.env.SECRET, {expiresIn: 3600})
+    // console.log("hello", req.body);
+    var token = jwt.sign(req.body, process.env.SECRET, { expiresIn: 3600 });
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.json({
@@ -129,6 +129,7 @@ app.get("/api/concerts", (req, res) => {
 // query one concert
 app.get("/api/concerts/:id", (req, res) => {
   console.log(req.params.id);
+  console.log(req.headers.authorization);
   Concert.find({ "properties.id": req.params.id })
     .then((concert) => {
       res.json(concert);
@@ -139,45 +140,53 @@ app.get("/api/concerts/:id", (req, res) => {
 });
 
 // update concert
-app.patch("/api/concerts/:id", passport.authenticate("jwt", { session: false }), (req, res) => {
-  let obj = req.body.content;
-  Concert.findOneAndUpdate(
-    { "properties.id": req.params.id },
-    {
-      $set: obj,
-    },
-    { new: true }
-  )
-    .then((concert) => res.json(concert))
-    .catch((err) => res.json(err));
-});
+app.patch(
+  "/api/concerts/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let obj = req.body.content;
+    Concert.findOneAndUpdate(
+      { "properties.id": req.params.id },
+      {
+        $set: obj,
+      },
+      { new: true }
+    )
+      .then((concert) => res.json(concert))
+      .catch((err) => res.json(err));
+  }
+);
 
 // create concert
-app.post("/api/concerts", passport.authenticate("jwt", { session: false }), (req, res) => {
-  let obj = req.body.content;
-  query = Concert.findOne(
-    {},
-    {},
-    {
-      sort: { "properties.id": -1 },
-    }
-  );
-  query.then(function (data) {
-    let lastId = data.properties.id;
-    console.log(lastId);
-    obj.properties.id = lastId + 1;
+app.post(
+  "/api/concerts",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let obj = req.body.content;
+    query = Concert.findOne(
+      {},
+      {},
+      {
+        sort: { "properties.id": -1 },
+      }
+    );
+    query.then(function (data) {
+      let lastId = data.properties.id;
+      console.log(lastId);
+      obj.properties.id = lastId + 1;
 
-    let concert = new Concert(obj);
-    concert
-      .save()
-      .then((concert) => {
-        res.json(concert);
-      })
-      .catch((err) => {
-        res.json(err);
-      });
-  });
-});
+      let concert = new Concert(obj);
+      concert
+        .save()
+        .then((concert) => {
+          res.json(concert);
+        })
+        .catch((err) => {
+          res.json(err);
+        });
+    });
+  }
+);
 
 app.listen(PORT, () => {
   console.log("Server is running");

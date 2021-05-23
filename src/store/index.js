@@ -18,9 +18,15 @@ export default new Vuex.Store({
     CONCERTS_CREATE(context, { input }) {
       console.log(input);
       return axios
-        .post(`https://maylody.herokuapp.com/api/concerts`, {
-          content: input,
-        })
+        .post(
+          `${process.env.VUE_APP_APIURL}/api/concerts`,
+          { content: input },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        )
         .then(() => {
           console.log("Create!");
         })
@@ -29,20 +35,28 @@ export default new Vuex.Store({
         });
     },
     CONCERTS_READ(context) {
-      return axios.get("https://maylody.herokuapp.com/api/concerts").then((res) => {
-        context.commit("setConcerts", res.data);
-      });
+      return axios
+        .get(`${process.env.VUE_APP_APIURL}/api/concerts`)
+        .then((res) => {
+          context.commit("setConcerts", res.data);
+        });
     },
     CONCERTS_UPDATE(context, { id, input }) {
       console.log(input);
       return axios
-        .patch(`https://maylody.herokuapp.com/api/concerts/${id}`, {
-          content: input,
-        })
+        .patch(
+          `${process.env.VUE_APP_APIURL}/api/concerts/${id}`,
+          { content: input },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        )
         .then(() => {
           console.log("Update Done!");
         });
-    },
+    }, 
   },
   modules: {},
 });

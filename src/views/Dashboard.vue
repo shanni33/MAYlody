@@ -127,8 +127,6 @@ export default {
       inputLng: "",
       inputDate: "",
       concertId: "",
-      modalShow: false,
-      moShow: false,
       fields: [
         { key: "event", label: "演唱會" },
         { key: "date", label: "日期" },
@@ -163,7 +161,6 @@ export default {
         },
       };
       this.$store.dispatch("CONCERTS_CREATE", { input: obj }).then(() => {
-        // this.closeModal();
         this.$store.dispatch("CONCERTS_READ");
       });
     },
@@ -218,7 +215,6 @@ export default {
   },
   mounted() {
     this.$store.dispatch("CONCERTS_READ");
-    console.info("process.env.DEV :", process.env.PORT);
   },
 };
 </script>
