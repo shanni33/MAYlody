@@ -9,15 +9,18 @@ import L from "leaflet";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import "leaflet.markercluster/dist/leaflet.markercluster";
-import dataSet from "../assets/ConcertGeoJson.json";
 
 let osmMap = {};
 
 export default {
   data() {
     return {
-      inputData: dataSet["features"],
     };
+  },
+  computed: {
+    rawData(){
+      return this.$store.state.rawData;
+    },
   },
   methods: {
     addMarkers() {
@@ -34,7 +37,7 @@ export default {
         layer.bindPopup(text);
       }
 
-      var points = L.geoJSON(this.inputData, {
+      var points = L.geoJSON(this.rawData, {
         onEachFeature: popUp,
       });
       markers.addLayer(points).addTo(osmMap);
@@ -91,11 +94,11 @@ export default {
             layer.openPopup();
           }
         });
-      }
+    }
   },
   mounted() {
     this.initMap();
-    this.addMarkers();
+    this.$store.dispatch("CONCERTS_READ").then(() => this.addMarkers()).catch((e)=>console.log(e));
   },
   created(){
     window.openPopUp = this.openPopUp;

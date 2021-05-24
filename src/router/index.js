@@ -8,20 +8,13 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "Home",
-    redirect: "/home"
+    redirect: "/home",
   },
   {
     path: "/home",
     name: "Home",
     component: Home,
-    },
-  // {
-  //   path: "/concerts",
-  //   name: "concerts",
-  //   component: () =>
-  //     import(/* webpackChunkName: "ConcertCard" */ "../views/ConcertCard.vue"),
-  // },
+  },
   {
     path: "/concerts",
     name: "concerts",
@@ -54,10 +47,27 @@ const routes = [
     name: "Map",
     component: Map,
   },
+  {
+    path: "/login",
+    name: "login",
+    component: () =>
+      import(/* webpackChunkName: "Login" */ "../views/Login.vue"),
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: () =>
+      import(/* webpackChunkName: "Dashboard" */ "../views/Dashboard.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "*",
+    redirect: "/home",
+  },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes,
 });

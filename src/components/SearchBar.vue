@@ -23,11 +23,14 @@ export default {
   },
   watch: {
     searchText: {
-      immediate: true, // 在初始化時呼叫一次
+      // immediate: true, // 在初始化時呼叫一次
       handler() {
         this.search();
       },
     },
+  },
+  mounted(){
+    this.search();
   },
 
   methods: {
