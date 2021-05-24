@@ -59,10 +59,15 @@
         </template>
         <template #cell(edit)="data">
           <b-button
-            class="my-1"
+            class="edit-btn"
             v-b-modal.updateModal
             @click="openUpdateModal(data.item)"
             >修改</b-button
+          >
+          <b-button
+            class="del-btn ml-2"
+            @click="deleteConcert(data.item.properties.id)"
+            >刪除</b-button
           >
         </template>
       </b-table>
@@ -160,7 +165,7 @@ export default {
           coordinates: [this.inputLng, this.inputLat],
         },
       };
-      this.$store.dispatch("CONCERTS_CREATE", { input: obj });
+      this.$store.dispatch("CONCERT_CREATE", { input: obj });
     },
     closeModal() {
       console.log("close");
@@ -173,6 +178,9 @@ export default {
       this.inputLat = "";
       this.inputLng = "";
       this.concertId = "";
+    },
+    deleteConcert(id) {
+      this.$store.dispatch("CONCERT_DELETE", id);
     },
     openUpdateModal(data) {
       this.inputEvent = data.properties.event;
@@ -202,7 +210,7 @@ export default {
           coordinates: [this.inputLng, this.inputLat],
         },
       };
-      this.$store.dispatch("CONCERTS_UPDATE", { id: id, input: obj });
+      this.$store.dispatch("CONCERT_UPDATE", { id: id, input: obj });
     },
   },
   mounted() {

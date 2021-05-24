@@ -191,6 +191,23 @@ app.patch(
   }
 );
 
+app.delete("/api/concerts/:id", (req, res) => {
+  Concert.findOneAndRemove({
+    "properties.id": req.params.id,
+  })
+    .then((concert) => {
+      if (concert) {
+        res.json({ success: true, message: "Deleted!" });
+      } else {
+        res.json({ success: false, message: "Can't find this session." });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json({ success: false, message: "Delete failed." });
+    });
+});
+
 app.listen(PORT, () => {
   console.log("Server is running.");
 });
