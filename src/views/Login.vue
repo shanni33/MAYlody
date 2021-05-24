@@ -31,7 +31,6 @@
       >
     </b-form>
   </b-container>
-  
 </template>
 <script>
 export default {
@@ -46,7 +45,6 @@ export default {
   },
   methods: {
     login() {
-      console.log("submit");
       let obj = {
         username: this.form.username,
         password: this.form.password,
@@ -54,14 +52,13 @@ export default {
 
       this.axios
         .post(`${process.env.VUE_APP_APIURL}/login`, obj)
-        .then((res) => {               
+        .then((res) => {
           if (res.data.success) {
-            console.log("Login");
             let authToken = res.data.token;
             localStorage.setItem("access_token", authToken);
             this.$router.push({ name: "Dashboard" });
             this.form.email = "";
-            this.form.username = "";   
+            this.form.username = "";
           }
         })
         .catch((err) => {

@@ -27,22 +27,30 @@ export default new Vuex.Store({
             },
           }
         )
-        .then(() => {
-          console.log("Create!");
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            context.dispatch("CONCERTS_READ");
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
     CONCERTS_READ(context) {
+      console.log("read data");
       return axios
         .get(`${process.env.VUE_APP_APIURL}/api/concerts`)
         .then((res) => {
-          context.commit("setConcerts", res.data);
+          if (res.data.success) {
+            context.commit("setConcerts", res.data.concerts);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
     CONCERTS_UPDATE(context, { id, input }) {
-      console.log(input);
       return axios
         .patch(
           `${process.env.VUE_APP_APIURL}/api/concerts/${id}`,
@@ -53,10 +61,16 @@ export default new Vuex.Store({
             },
           }
         )
-        .then(() => {
-          console.log("Update Done!");
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            context.dispatch("CONCERTS_READ");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-    }, 
+    },
   },
   modules: {},
 });

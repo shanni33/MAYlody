@@ -71,10 +71,10 @@ mongoose
 mongoose.Promise = global.Promise;
 
 app.get("/", (req, res) => {
-  res.send("Hello Express!");
+  res.send("Hello MAYlody API!");
 });
 
-// create an account
+//create an account
 // app.post("/signup", function (req, res) {
 //   let obj = req.body;
 //   let user = new User(obj);
@@ -98,64 +98,43 @@ app.get("/", (req, res) => {
 // });
 
 // login
-app.post(
-  "/login",
-  passport.authenticate("local"),
-  (req, res) => {
-    // console.log("hello", req.body);
-    var token = jwt.sign(req.body, process.env.SECRET, { expiresIn: 3600 });
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "application/json");
-    res.json({
-      success: true,
-      token: token,
-      status: "You are successful logged in!",
-    });
-  }
-);
+app.post("/login", passport.authenticate("local"), (req, res) => {
+  var token = jwt.sign(req.body, process.env.SECRET, { expiresIn: 3600 });
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "application/json");
+  res.json({
+    success: true,
+    token: token,
+    message: "You are successful logged in!",
+  });
+});
 
 // query all concerts
 app.get("/api/concerts", (req, res) => {
   Concert.find({})
     .then((concerts) => {
       concertsData = concerts;
-      res.json(concerts);
+      res.json({ success: true, concerts: concerts });
     })
     .catch((err) => {
-      res.json(err);
+      res.status(500).json({ success: false, message: err.message });
     });
 });
 
 // query one concert
 app.get("/api/concerts/:id", (req, res) => {
-  console.log(req.params.id);
-  console.log(req.headers.authorization);
-  Concert.find({ "properties.id": req.params.id })
+  Concert.findOne({ "properties.id": req.params.id })
     .then((concert) => {
-      res.json(concert);
+      if (concert) {
+        res.json({ success: true, concert: concert });
+      } else {
+        res.json({ success: false, message: "Can't find this session." });
+      }
     })
     .catch((err) => {
-      res.json(err);
+      res.status(500).json({ success: false, message: err });
     });
 });
-
-// update concert
-app.patch(
-  "/api/concerts/:id",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    let obj = req.body.content;
-    Concert.findOneAndUpdate(
-      { "properties.id": req.params.id },
-      {
-        $set: obj,
-      },
-      { new: true }
-    )
-      .then((concert) => res.json(concert))
-      .catch((err) => res.json(err));
-  }
-);
 
 // create concert
 app.post(
@@ -172,24 +151,48 @@ app.post(
     );
     query.then(function (data) {
       let lastId = data.properties.id;
-      console.log(lastId);
       obj.properties.id = lastId + 1;
 
       let concert = new Concert(obj);
       concert
         .save()
-        .then((concert) => {
-          res.json(concert);
+        .then(() => {
+          res.json({ success: true, message: "Created!" });
         })
         .catch((err) => {
-          res.json(err);
+          console.log(err);
+          res.json({ success: false, message: err.message });
         });
     });
   }
 );
 
+// update concert
+app.patch(
+  "/api/concerts/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    let obj = req.body.content;
+    Concert.findOneAndUpdate({ "properties.id": req.params.id }, obj, {
+      new: true,
+      runValidators: true,
+    })
+      .then((concert) => {
+        if (concert) {
+          res.json({ success: true, message: "Updated!" });
+        } else {
+          res.json({ success: false, message: "Can't find this session." });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ success: false, message: "Update failed." });
+      });
+  }
+);
+
 app.listen(PORT, () => {
-  console.log("Server is running");
+  console.log("Server is running.");
 });
 
 module.exports = app;

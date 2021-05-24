@@ -160,9 +160,7 @@ export default {
           coordinates: [this.inputLng, this.inputLat],
         },
       };
-      this.$store.dispatch("CONCERTS_CREATE", { input: obj }).then(() => {
-        this.$store.dispatch("CONCERTS_READ");
-      });
+      this.$store.dispatch("CONCERTS_CREATE", { input: obj });
     },
     closeModal() {
       console.log("close");
@@ -188,7 +186,6 @@ export default {
       this.concertId = data.properties.id;
     },
     updateConcert() {
-      console.log("update");
       let id = this.concertId;
       let _songs = this.inputSongs.split(",");
       let obj = {
@@ -205,12 +202,7 @@ export default {
           coordinates: [this.inputLng, this.inputLat],
         },
       };
-      this.$store
-        .dispatch("CONCERTS_UPDATE", { id: id, input: obj })
-        .then(() => {
-          // this.closeModal();
-          this.$store.dispatch("CONCERTS_READ");
-        });
+      this.$store.dispatch("CONCERTS_UPDATE", { id: id, input: obj });
     },
   },
   mounted() {
