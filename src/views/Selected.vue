@@ -42,26 +42,27 @@
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
         <option>{{ filterData.length }}</option>
       </select>
-
-      <paginate
-        :page-count="totalPages"
-        :click-handler="clickCallback"
-        :margin-pages="3"
-        :prev-text="'<<'"
-        :next-text="'>>'"
-        :container-class="'pagination pagination-sm justify-content-center mb-0'"
-        :page-class="'page-item'"
-        :page-link-class="'page-link'"
-        :prev-class="'page-item'"
-        :prev-link-class="'page-link'"
-        :next-class="'page-item'"
-        :next-link-class="'page-link'"
-      >
-      </paginate>
+      <div class="mt-3">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="filterData.length"
+          :per-page="perPage"
+          first-number
+          last-number
+          align="center"
+        ></b-pagination>
+      </div>
     </div>
 
     <div
-      class="scroll-top position-fixed h2 d-flex justify-content-center align-items-center"
+      class="
+        scroll-top
+        position-fixed
+        h2
+        d-flex
+        justify-content-center
+        align-items-center
+      "
       @click="scrollToTop"
     >
       <span class="material-icons"> expand_less </span>
@@ -79,7 +80,7 @@ export default {
   },
   data() {
     return {
-      currentPage: 0,
+      currentPage: 1,
       filterData: [],
       order: 1,
       pages: [12, 24, 36, 48, 60],
@@ -89,8 +90,8 @@ export default {
   },
   computed: {
     slicedData() {
-      let start = this.currentPage * this.perPage;
-      let end = (this.currentPage + 1) * this.perPage;
+      let start = (this.currentPage - 1) * this.perPage;
+      let end = this.currentPage * this.perPage;
       return this.sortData.slice(start, end);
     },
     sortData() {

@@ -57,24 +57,26 @@
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
         <option>{{ filterData.length }}</option>
       </select>
-      <paginate
-        :page-count="totalPages"
-        :click-handler="clickCallback"
-        :margin-pages="2"
-        :prev-text="'<<'"
-        :next-text="'>>'"
-        :container-class="'pagination pagination-sm justify-content-center mb-0'"
-        :page-class="'page-item'"
-        :page-link-class="'page-link'"
-        :prev-class="'page-item'"
-        :prev-link-class="'page-link'"
-        :next-class="'page-item'"
-        :next-link-class="'page-link'"
-      >
-      </paginate>
+      <div class="mt-3">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="filterData.length"
+          :per-page="perPage"
+          first-number
+          last-number
+          align="center"
+        ></b-pagination>
+      </div>
     </div>
     <div
-      class="scroll-top position-fixed h2 d-flex justify-content-center align-items-center"
+      class="
+        scroll-top
+        position-fixed
+        h2
+        d-flex
+        justify-content-center
+        align-items-center
+      "
       @click="scrollToTop"
     >
       <span class="material-icons"> expand_less</span>
@@ -93,7 +95,7 @@ export default {
   data() {
     return {
       check: false,
-      currentPage: 0,
+      currentPage: 1,
       filterData: [],
       isLoad: false,
       order: 1,
@@ -101,7 +103,6 @@ export default {
       perPage: 12,
       searchData: [],
       selected: JSON.parse(sessionStorage.mySelected || "[]"),
-      // rawData: [],
     };
   },
 
@@ -137,8 +138,8 @@ export default {
       },
     },
     slicedData() {
-      let start = this.currentPage * this.perPage;
-      let end = (this.currentPage + 1) * this.perPage;
+      let start = (this.currentPage - 1) * this.perPage;
+      let end = this.currentPage * this.perPage;
       return this.sortData.slice(start, end);
     },
     sortData() {
@@ -147,14 +148,14 @@ export default {
         (a, b) => (new Date(b.date) - new Date(a.date)) * this.order
       );
     },
-    purifyData(){
+    purifyData() {
       let newData = [];
       this.rawData.forEach((item) => {
-        newData.push(item.properties)
-      })
+        newData.push(item.properties);
+      });
       return newData;
     },
-    rawData(){
+    rawData() {
       return this.$store.state.rawData;
     },
     totalPages() {
@@ -167,9 +168,6 @@ export default {
   },
 
   methods: {
-    clickCallback: function (pageNum) {
-      this.currentPage = pageNum - 1;
-    },
     compressData: function (arr) {
       let results = [];
       arr.forEach((value) => {
@@ -203,8 +201,8 @@ export default {
         }
       }
       return results;
-    },  
-    returnSearch: function (outputData) {     
+    },
+    returnSearch: function (outputData) {
       this.filterData = outputData;
     },
     submitData: function () {
@@ -243,8 +241,10 @@ export default {
       },
     },
   },
-  created() {   
-    this.$store.dispatch("CONCERTS_READ").then(() => {this.isLoad = true;});
+  created() {
+    this.$store.dispatch("CONCERTS_READ").then(() => {
+      this.isLoad = true;
+    });
   },
 };
 </script>

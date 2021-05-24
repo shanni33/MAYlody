@@ -3,7 +3,11 @@
     <div class="container card-container">
       <div class="row justify-content-center py-2 mx-auto tool-bar">
         <div class="col-8 col-sm-10 col-md-5 col-lg-5">
-          <SearchBar :inputData="parseData" @on-search="returnSearch" class="search"/>
+          <SearchBar
+            :inputData="parseData"
+            @on-search="returnSearch"
+            class="search"
+          />
         </div>
       </div>
       <div class="row minor-bar py-2 m-auto">
@@ -29,7 +33,13 @@
             </div>
             <div class="divd"></div>
             <div
-              class="right d-flex align-items-center justify-content-center py-4"
+              class="
+                right
+                d-flex
+                align-items-center
+                justify-content-center
+                py-4
+              "
             >
               <span class="material-icons mx-2">hearing</span>
               <h6 class="inner-text" style="color: #2c3e50">
@@ -46,25 +56,26 @@
         <option v-for="(page, idx) in pages" :key="idx">{{ page }}</option>
         <option>{{ filterData.length }}</option>
       </select>
-
-      <paginate
-        :page-count="totalPages"
-        :click-handler="clickCallback"
-        :margin-pages="2"
-        :prev-text="'<<'"
-        :next-text="'>>'"
-        :container-class="'pagination pagination-sm justify-content-center'"
-        :page-class="'page-item'"
-        :page-link-class="'page-link'"
-        :prev-class="'page-item'"
-        :prev-link-class="'page-link'"
-        :next-class="'page-item'"
-        :next-link-class="'page-link'"
-      >
-      </paginate>
+      <div class="mt-3">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="filterData.length"
+          :per-page="perPage"
+          first-number
+          last-number
+          align="center"
+        ></b-pagination>
+      </div>
     </div>
     <div
-      class="scroll-top position-fixed h2 d-flex justify-content-center align-items-center"
+      class="
+        scroll-top
+        position-fixed
+        h2
+        d-flex
+        justify-content-center
+        align-items-center
+      "
       @click="scrollToTop"
     >
       <span class="material-icons"> expand_less</span>
@@ -79,18 +90,18 @@ export default {
   },
   data() {
     return {
-      currentPage: 0,
+      currentPage: 1,
       filterData: [],
       order: 1,
       pages: [12, 24, 36, 48, 60],
-      parseData: JSON.parse(sessionStorage.myResults || '[]'),
+      parseData: JSON.parse(sessionStorage.myResults || "[]"),
       perPage: 12,
     };
   },
   computed: {
     slicedData() {
-      let start = this.currentPage * this.perPage;
-      let end = (this.currentPage + 1) * this.perPage;
+      let start = (this.currentPage - 1) * this.perPage;
+      let end = this.currentPage * this.perPage;
       return this.sortData.slice(start, end);
     },
     sortData() {
@@ -149,7 +160,7 @@ export default {
 .result-card {
   margin: 1rem;
   width: 18rem;
-  .material-icons{
+  .material-icons {
     color: #b99362;
   }
 }
