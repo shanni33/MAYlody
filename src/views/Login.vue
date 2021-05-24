@@ -30,6 +30,7 @@
       >
     </b-form>
   </b-container>
+  
 </template>
 <script>
 export default {
@@ -77,20 +78,20 @@ export default {
 
 .login-form {
   font-family: "Josefin Sans" !important;
-  max-width: 360px;
+  max-width: 420px;
   width: 100%;
   padding: 50px 40px;
-  border: 1px solid #e1e2f0;
   border-radius: 10px;
   margin-top: 75px;
   height: auto;
   background: #fff;
 
   .input {
-    font-size: 1.2rem;
+    height: 42px;
+    font-size: 1rem;
     border: none;
     border-radius: 25px;
-    padding: 20px 12px;
+    // padding: 20px 12px;
     background: rgb(146 124 124 / 22%);
   }
 

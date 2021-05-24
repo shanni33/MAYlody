@@ -53,8 +53,8 @@
           <b-nav-item
             class="nav-item nav-link text-uppercase"
             :to="navLink[0]"
-            v-for="navLink in navLinks"
-            :key="navLink"
+            v-for="(navLink, idx) in navLinks"
+            :key="idx"
             >{{ navLink[1] }}</b-nav-item
           >
         </b-navbar-nav>

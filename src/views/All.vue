@@ -42,7 +42,7 @@
       >
         <TicketCard
           v-for="data in slicedData"
-          :key="data.songs"
+          :key="data.id"
           :inputData="data"
           :syncSelected.sync="selected"
         />
