@@ -3,7 +3,7 @@
     class="login-container d-flex justify-content-center py-5"
     align-self="center"
   >
-    <b-form class="login-form" @submit="login()" v-if="show">
+    <b-form class="login-form" v-if="show">
       <h2 class="mb-4" style="color: #222">ADMIN LOGIN</h2>
       <b-form-group class="label" label="USERNAME" label-for="input-name">
         <b-form-input
@@ -23,8 +23,9 @@
         ></b-form-input>
       </b-form-group>
       <b-button
+        @click="login()"
         class="mt-3 px-4"
-        type="submit"
+        type="button"
         style="background: #b99362; border: None; border-radius: 25px"
         >登入</b-button
       >
@@ -53,15 +54,14 @@ export default {
 
       this.axios
         .post(`${process.env.VUE_APP_APIURL}/login`, obj)
-        .then((res) => {
-          this.form.email = "";
-          this.form.username = "";
-          console.log("Login!");
-          let authToken = res.data.token;
-          localStorage.setItem("access_token", authToken);
+        .then((res) => {               
           if (res.data.success) {
-            console.log("hihi");
-            this.$router.push({ name: "dashboard" });
+            console.log("Login");
+            let authToken = res.data.token;
+            localStorage.setItem("access_token", authToken);
+            this.$router.push({ name: "Dashboard" });
+            this.form.email = "";
+            this.form.username = "";   
           }
         })
         .catch((err) => {
