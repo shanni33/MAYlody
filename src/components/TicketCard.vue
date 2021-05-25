@@ -11,7 +11,7 @@
               <span class="date">{{ inputData.date }}</span>
             </div>
             <div class="row mt-2 justify-content-center align-items-center">
-              <span class="city"> @{{ inputData.city }}</span>
+              <span class="loc"> @{{ inputData.loc }}</span>
             </div>
             <hr class="info-divider" />
             <div class="row mt-2 mb-1 justify-content-around">
@@ -149,7 +149,7 @@ export default {
   }
 
   .date,
-  .city {
+  .loc {
     font-size: 1rem;
   }
 

@@ -29,11 +29,11 @@
           <b-form-group label="日期:" label-for="date-input">
             <b-form-input id="date-input" v-model="inputDate"></b-form-input>
           </b-form-group>
-          <b-form-group label="城市:" label-for="loc-input">
-            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
-          </b-form-group>
-          <b-form-group label="地點:" label-for="city-input">
+          <b-form-group label="城市:" label-for="city-input">
             <b-form-input id="city-input" v-model="inputCity"></b-form-input>
+          </b-form-group>
+          <b-form-group label="地點:" label-for="loc-input">
+            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
           </b-form-group>
           <b-form-group label="經度:" label-for="lng-input">
             <b-form-input id="lng-input" v-model="inputLng"></b-form-input>
@@ -54,8 +54,8 @@
         <template #cell(date)="data">
           {{ data.item.properties.date }}
         </template>
-        <template #cell(city)="data">
-          {{ data.item.properties.city }}
+        <template #cell(loc)="data">
+          {{ data.item.properties.loc }}
         </template>
         <template #cell(edit)="data">
           <b-button
@@ -99,11 +99,11 @@
           <b-form-group label="日期:" label-for="date-input">
             <b-form-input id="date-input" v-model="inputDate"></b-form-input>
           </b-form-group>
-          <b-form-group label="城市:" label-for="loc-input">
-            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
-          </b-form-group>
-          <b-form-group label="地點:" label-for="city-input">
+          <b-form-group label="城市:" label-for="city-input">
             <b-form-input id="city-input" v-model="inputCity"></b-form-input>
+          </b-form-group>
+          <b-form-group label="地點:" label-for="loc-input">
+            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
           </b-form-group>
           <b-form-group label="經度:" label-for="lng-input">
             <b-form-input id="lng-input" v-model="inputLng"></b-form-input>
@@ -135,7 +135,7 @@ export default {
       fields: [
         { key: "event", label: "演唱會" },
         { key: "date", label: "日期" },
-        { key: "city", label: "地點" },
+        { key: "loc", label: "地點" },
         { key: "edit", label: "修改" },
       ],
     };
