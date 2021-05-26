@@ -15,7 +15,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    CONCERTS_CREATE(context, { input }) {
+    CONCERT_CREATE(context, { input }) {
       console.log(input);
       return axios
         .post(
@@ -27,22 +27,30 @@ export default new Vuex.Store({
             },
           }
         )
-        .then(() => {
-          console.log("Create!");
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            context.dispatch("CONCERTS_READ");
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
     CONCERTS_READ(context) {
+      console.log("read data");
       return axios
         .get(`${process.env.VUE_APP_APIURL}/api/concerts`)
         .then((res) => {
-          context.commit("setConcerts", res.data);
+          if (res.data.success) {
+            context.commit("setConcerts", res.data.concerts);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
-    CONCERTS_UPDATE(context, { id, input }) {
-      console.log(input);
+    CONCERT_UPDATE(context, { id, input }) {
       return axios
         .patch(
           `${process.env.VUE_APP_APIURL}/api/concerts/${id}`,
@@ -53,10 +61,33 @@ export default new Vuex.Store({
             },
           }
         )
-        .then(() => {
-          console.log("Update Done!");
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            context.dispatch("CONCERTS_READ");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-    }, 
+    },
+    CONCERT_DELETE(context, id) {
+      return axios
+        .delete(`${process.env.VUE_APP_APIURL}/api/concerts/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.success) {
+            context.dispatch("CONCERTS_READ");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   modules: {},
 });

@@ -14,11 +14,10 @@ let osmMap = {};
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
-    rawData(){
+    rawData() {
       return this.$store.state.rawData;
     },
   },
@@ -33,7 +32,7 @@ export default {
 
       //Popup text
       function popUp(feature, layer) {
-        var text = `<h6 style="font-weight:bold;">${feature.properties["event"]}</h6><p>${feature.properties["date"]}</p><p>${feature.properties["city"]}<p>`;
+        var text = `<h6 style="font-weight:bold;">${feature.properties["event"]}</h6><p>${feature.properties["date"]}</p><p>${feature.properties["loc"]}<p>`;
         layer.bindPopup(text);
       }
 
@@ -48,7 +47,16 @@ export default {
           //there are many markers inside "a". to be exact: a.layer._childCount much ;-)
           for (var marker in a.layer._markers) {
             /* popUpText += `<li>${a.layer._markers[marker].feature.properties["event"]}, ${a.layer._markers[marker].feature.properties["date"]}</li>`; */
-            popUpText+= '<li><u style="cursor:pointer;" onclick="openPopUp(' + a.layer._markers[marker]._leaflet_id + ','+ a.layer._leaflet_id +')">' + a.layer._markers[marker].feature.properties['event'] + ', ' + a.layer._markers[marker].feature.properties['date'] + '</u></li>';
+            popUpText +=
+              '<li><u style="cursor:pointer;" onclick="openPopUp(' +
+              a.layer._markers[marker]._leaflet_id +
+              "," +
+              a.layer._leaflet_id +
+              ')">' +
+              a.layer._markers[marker].feature.properties["event"] +
+              ", " +
+              a.layer._markers[marker].feature.properties["date"] +
+              "</u></li>";
           }
           popUpText += "</ul>";
           //as we have the content, we should add the popup to the map add the coordinate that is inherent in the cluster:
@@ -58,7 +66,6 @@ export default {
             .openOn(osmMap);
         }
       });
-      
     },
     initMap() {
       // initiation
@@ -76,33 +83,36 @@ export default {
       }).addTo(osmMap);
     },
     openPopUp(id, clusterId) {
-        console.log('hihi');
-        console.log(id);
-        console.log(clusterId);
-        osmMap.closePopup(); //which will close all popups
-        osmMap.eachLayer(function (layer) {
-          //iterate over map layer
-          if (layer._leaflet_id == clusterId) {
-            // if layer is markerCluster
-            layer.spiderfy(); //spiederfies our cluster
-          }
-        });
-        osmMap.eachLayer(function (layer) {
-          //iterate over map rather than clusters
-          if (layer._leaflet_id == id) {
-            // if layer is marker
-            layer.openPopup();
-          }
-        });
-    }
+      console.log("hihi");
+      console.log(id);
+      console.log(clusterId);
+      osmMap.closePopup(); //which will close all popups
+      osmMap.eachLayer(function (layer) {
+        //iterate over map layer
+        if (layer._leaflet_id == clusterId) {
+          // if layer is markerCluster
+          layer.spiderfy(); //spiederfies our cluster
+        }
+      });
+      osmMap.eachLayer(function (layer) {
+        //iterate over map rather than clusters
+        if (layer._leaflet_id == id) {
+          // if layer is marker
+          layer.openPopup();
+        }
+      });
+    },
   },
   mounted() {
     this.initMap();
-    this.$store.dispatch("CONCERTS_READ").then(() => this.addMarkers()).catch((e)=>console.log(e));
+    this.$store
+      .dispatch("CONCERTS_READ")
+      .then(() => this.addMarkers())
+      .catch((e) => console.log(e));
   },
-  created(){
+  created() {
     window.openPopUp = this.openPopUp;
-  }
+  },
 };
 </script>
 

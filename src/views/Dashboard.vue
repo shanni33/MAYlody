@@ -1,7 +1,12 @@
 <template>
   <div class="concert-list-continer py-4">
     <div class="table-content container mx-auto">
-      <b-button class="my-3" v-b-modal.createModal>新增演唱會</b-button>
+      <b-button
+        class="create-btn my-3 p-2"
+        style="display: inline-flex"
+        v-b-modal.createModal
+        ><i class="material-icons"> add </i>新增演唱會</b-button
+      >
       <b-modal
         id="createModal"
         @hidden="closeModal"
@@ -29,11 +34,11 @@
           <b-form-group label="日期:" label-for="date-input">
             <b-form-input id="date-input" v-model="inputDate"></b-form-input>
           </b-form-group>
-          <b-form-group label="城市:" label-for="loc-input">
-            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
-          </b-form-group>
-          <b-form-group label="地點:" label-for="city-input">
+          <b-form-group label="城市:" label-for="city-input">
             <b-form-input id="city-input" v-model="inputCity"></b-form-input>
+          </b-form-group>
+          <b-form-group label="地點:" label-for="loc-input">
+            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
           </b-form-group>
           <b-form-group label="經度:" label-for="lng-input">
             <b-form-input id="lng-input" v-model="inputLng"></b-form-input>
@@ -54,16 +59,23 @@
         <template #cell(date)="data">
           {{ data.item.properties.date }}
         </template>
-        <template #cell(city)="data">
-          {{ data.item.properties.city }}
+        <template #cell(loc)="data">
+          {{ data.item.properties.loc }}
         </template>
         <template #cell(edit)="data">
-          <b-button
-            class="my-1"
+          <span
+            class="material-icons edit-btn mr-1"
             v-b-modal.updateModal
             @click="openUpdateModal(data.item)"
-            >修改</b-button
           >
+            edit
+          </span>
+          <span
+            class="material-icons del-btn ml-1"
+            @click="deleteConcert(data.item.properties.id)"
+          >
+            delete
+          </span>
         </template>
       </b-table>
 
@@ -94,11 +106,11 @@
           <b-form-group label="日期:" label-for="date-input">
             <b-form-input id="date-input" v-model="inputDate"></b-form-input>
           </b-form-group>
-          <b-form-group label="城市:" label-for="loc-input">
-            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
-          </b-form-group>
-          <b-form-group label="地點:" label-for="city-input">
+          <b-form-group label="城市:" label-for="city-input">
             <b-form-input id="city-input" v-model="inputCity"></b-form-input>
+          </b-form-group>
+          <b-form-group label="地點:" label-for="loc-input">
+            <b-form-input id="loc-input" v-model="inputLoc"></b-form-input>
           </b-form-group>
           <b-form-group label="經度:" label-for="lng-input">
             <b-form-input id="lng-input" v-model="inputLng"></b-form-input>
@@ -128,10 +140,10 @@ export default {
       inputDate: "",
       concertId: "",
       fields: [
-        { key: "event", label: "演唱會" },
-        { key: "date", label: "日期" },
-        { key: "city", label: "地點" },
-        { key: "edit", label: "修改" },
+        { key: "event", label: "演唱會", class: "text-center" },
+        { key: "date", label: "日期", class: "text-center" },
+        { key: "loc", label: "地點", class: "text-center" },
+        { key: "edit", label: "修改", class: "text-center" },
       ],
     };
   },
@@ -160,9 +172,7 @@ export default {
           coordinates: [this.inputLng, this.inputLat],
         },
       };
-      this.$store.dispatch("CONCERTS_CREATE", { input: obj }).then(() => {
-        this.$store.dispatch("CONCERTS_READ");
-      });
+      this.$store.dispatch("CONCERT_CREATE", { input: obj });
     },
     closeModal() {
       console.log("close");
@@ -176,6 +186,9 @@ export default {
       this.inputLng = "";
       this.concertId = "";
     },
+    deleteConcert(id) {
+      this.$store.dispatch("CONCERT_DELETE", id);
+    },
     openUpdateModal(data) {
       this.inputEvent = data.properties.event;
       this.inputCity = data.properties.city;
@@ -188,7 +201,6 @@ export default {
       this.concertId = data.properties.id;
     },
     updateConcert() {
-      console.log("update");
       let id = this.concertId;
       let _songs = this.inputSongs.split(",");
       let obj = {
@@ -205,12 +217,7 @@ export default {
           coordinates: [this.inputLng, this.inputLat],
         },
       };
-      this.$store
-        .dispatch("CONCERTS_UPDATE", { id: id, input: obj })
-        .then(() => {
-          // this.closeModal();
-          this.$store.dispatch("CONCERTS_READ");
-        });
+      this.$store.dispatch("CONCERT_UPDATE", { id: id, input: obj });
     },
   },
   mounted() {
@@ -268,5 +275,28 @@ table {
 .table-hover tbody tr:hover td {
   background: rgba(187, 184, 184, 0.233);
   color: #fff;
+}
+
+.table-hover tbody tr:hover .del-btn {
+  color: #fff;
+}
+
+.table-hover tbody tr:hover .edit-btn {
+  color: #fff;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.create-btn {
+  background-color: #b99362;
+  border: none;
+}
+
+.del-btn,
+.edit-btn {
+  cursor: pointer;
+  color: #495057;
 }
 </style>

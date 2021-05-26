@@ -124,7 +124,7 @@ export default {
                   x.date === data.date &&
                   x.series === data.series &&
                   x.event === data.event &&
-                  x.city === data.city &&
+                  x.loc === data.loc &&
                   x.songs.length === data.songs.length
               ).length == 0
             ) {

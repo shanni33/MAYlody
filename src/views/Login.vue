@@ -5,7 +5,8 @@
   >
     <b-form class="login-form" v-if="show">
       <h2 class="mb-4" style="color: #222">ADMIN LOGIN</h2>
-      <b-form-group class="label" label="USERNAME" label-for="input-name">
+      <b-form-group class="form-group" label="USERNAME" label-for="input-name">
+        <i class="material-icons form-icon"> person </i>
         <b-form-input
           class="input"
           id="input-name"
@@ -13,7 +14,12 @@
           required
         ></b-form-input>
       </b-form-group>
-      <b-form-group class="label" label="PASSWORD" label-for="input-password">
+      <b-form-group
+        class="form-group"
+        label="PASSWORD"
+        label-for="input-password"
+      >
+        <i class="material-icons form-icon"> vpn_key </i>
         <b-form-input
           class="input"
           type="password"
@@ -24,14 +30,13 @@
       </b-form-group>
       <b-button
         @click="login()"
-        class="mt-3 px-4"
+        class="login-btn mt-2 px-4"
         type="button"
         style="background: #b99362; border: None; border-radius: 25px"
-        >登入</b-button
+        >Login</b-button
       >
     </b-form>
   </b-container>
-  
 </template>
 <script>
 export default {
@@ -46,7 +51,6 @@ export default {
   },
   methods: {
     login() {
-      console.log("submit");
       let obj = {
         username: this.form.username,
         password: this.form.password,
@@ -54,14 +58,11 @@ export default {
 
       this.axios
         .post(`${process.env.VUE_APP_APIURL}/login`, obj)
-        .then((res) => {               
+        .then((res) => {
           if (res.data.success) {
-            console.log("Login");
             let authToken = res.data.token;
             localStorage.setItem("access_token", authToken);
             this.$router.push({ name: "Dashboard" });
-            this.form.email = "";
-            this.form.username = "";   
           }
         })
         .catch((err) => {
@@ -85,20 +86,35 @@ export default {
   margin-top: 75px;
   height: auto;
   background: #fff;
+  position: relative;
 
-  .input {
-    height: 42px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 25px;
-    // padding: 20px 12px;
-    background: rgb(146 124 124 / 22%);
-  }
-
-  .label {
+  .form-group {
     font-size: 13px;
     color: #222;
     text-align: left;
+    position: relative;
+  }
+
+  .input {
+    height: 40px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 25px;
+    background: rgb(146 124 124 / 22%);
+    padding-left: 45px;
+  }
+
+  .form-icon {
+    position: absolute;
+    display: inline-block;
+    transform: translateY(-50%);
+    left: 10px;
+    top: 46px;
+    color: #495057;
+  }
+
+  .login-btn {
+    vertical-align: bottom;
   }
 }
 </style>
