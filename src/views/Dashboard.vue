@@ -1,7 +1,12 @@
 <template>
   <div class="concert-list-continer py-4">
     <div class="table-content container mx-auto">
-      <b-button class="my-3" v-b-modal.createModal>新增演唱會</b-button>
+      <b-button
+        class="create-btn my-3 p-2"
+        style="display: inline-flex"
+        v-b-modal.createModal
+        ><i class="material-icons"> add </i>新增演唱會</b-button
+      >
       <b-modal
         id="createModal"
         @hidden="closeModal"
@@ -58,17 +63,19 @@
           {{ data.item.properties.loc }}
         </template>
         <template #cell(edit)="data">
-          <b-button
-            class="edit-btn"
+          <span
+            class="material-icons edit-btn mr-1"
             v-b-modal.updateModal
             @click="openUpdateModal(data.item)"
-            >修改</b-button
           >
-          <b-button
-            class="del-btn ml-2"
+            edit
+          </span>
+          <span
+            class="material-icons del-btn ml-1"
             @click="deleteConcert(data.item.properties.id)"
-            >刪除</b-button
           >
+            delete
+          </span>
         </template>
       </b-table>
 
@@ -133,10 +140,10 @@ export default {
       inputDate: "",
       concertId: "",
       fields: [
-        { key: "event", label: "演唱會" },
-        { key: "date", label: "日期" },
-        { key: "loc", label: "地點" },
-        { key: "edit", label: "修改" },
+        { key: "event", label: "演唱會", class: "text-center" },
+        { key: "date", label: "日期", class: "text-center" },
+        { key: "loc", label: "地點", class: "text-center" },
+        { key: "edit", label: "修改", class: "text-center" },
       ],
     };
   },
@@ -268,5 +275,28 @@ table {
 .table-hover tbody tr:hover td {
   background: rgba(187, 184, 184, 0.233);
   color: #fff;
+}
+
+.table-hover tbody tr:hover .del-btn {
+  color: #fff;
+}
+
+.table-hover tbody tr:hover .edit-btn {
+  color: #fff;
+}
+
+.material-icons {
+  vertical-align: middle;
+}
+
+.create-btn {
+  background-color: #b99362;
+  border: none;
+}
+
+.del-btn,
+.edit-btn {
+  cursor: pointer;
+  color: #495057;
 }
 </style>
