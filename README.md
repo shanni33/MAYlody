@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://raw.githubusercontent.com/shanni33/MAYlody/c3cc3dd45166dd221dbc6c6b3d819ea97a3f800d/public/maylody-icon.svg" alt="MAYlody" width="200">
+    <img src="https://raw.githubusercontent.com/shanni33/MAYlody/master/public/maylody-icon.svg?token=GHSAT0AAAAAABQJR36LAWNVHRQOAFLD3GASYPGXG2Q" alt="MAYlody" width="200">
     <h2>MAYlody 五月天演唱會查詢網站</h2>
 </div>
 
